@@ -23,6 +23,7 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
 import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authenticated/painel.grupos'
+import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
 import { Route as AuthenticatedPainelProdutosRouteImport } from './routes/_authenticated/painel.produtos'
 
 const IndexRoute = IndexRouteImport.update({
@@ -96,6 +97,12 @@ const AuthenticatedPainelGruposRoute =
     path: '/grupos',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelMensagensRoute =
+  AuthenticatedPainelMensagensRouteImport.update({
+    id: '/mensagens',
+    path: '/mensagens',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelProdutosRoute =
   AuthenticatedPainelProdutosRouteImport.update({
     id: '/produtos',
@@ -116,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/termos': typeof TermosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
   '/painel/': typeof AuthenticatedPainelIndexRoute
 }
@@ -131,6 +139,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
   '/painel': typeof AuthenticatedPainelIndexRoute
 }
@@ -149,6 +158,7 @@ export interface FileRoutesById {
   '/termos': typeof TermosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
   '/_authenticated/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/_authenticated/painel/produtos': typeof AuthenticatedPainelProdutosRoute
   '/_authenticated/painel/': typeof AuthenticatedPainelIndexRoute
 }
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/painel'
     | '/painel/grupos'
+    | '/painel/mensagens'
     | '/painel/produtos'
     | '/painel/'
   fileRoutesByTo: FileRoutesByTo
@@ -182,6 +193,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/painel/grupos'
+    | '/painel/mensagens'
     | '/painel/produtos'
     | '/painel'
   id:
@@ -199,6 +211,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/_authenticated/painel'
     | '/_authenticated/painel/grupos'
+    | '/_authenticated/painel/mensagens'
     | '/_authenticated/painel/produtos'
     | '/_authenticated/painel/'
   fileRoutesById: FileRoutesById
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelGruposRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/mensagens': {
+      id: '/_authenticated/painel/mensagens'
+      path: '/mensagens'
+      fullPath: '/painel/mensagens'
+      preLoaderRoute: typeof AuthenticatedPainelMensagensRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/produtos': {
       id: '/_authenticated/painel/produtos'
       path: '/produtos'
@@ -329,12 +349,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedPainelRouteChildren {
   AuthenticatedPainelGruposRoute: typeof AuthenticatedPainelGruposRoute
+  AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
   AuthenticatedPainelProdutosRoute: typeof AuthenticatedPainelProdutosRoute
   AuthenticatedPainelIndexRoute: typeof AuthenticatedPainelIndexRoute
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
   AuthenticatedPainelGruposRoute: AuthenticatedPainelGruposRoute,
+  AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
   AuthenticatedPainelProdutosRoute: AuthenticatedPainelProdutosRoute,
   AuthenticatedPainelIndexRoute: AuthenticatedPainelIndexRoute,
 }
