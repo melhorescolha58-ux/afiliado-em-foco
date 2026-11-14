@@ -29,9 +29,13 @@ import { Route as AuthenticatedPainelDisparoRouteImport } from './routes/_authen
 import { Route as AuthenticatedPainelDivulgadorRouteImport } from './routes/_authenticated/painel.divulgador'
 import { Route as AuthenticatedPainelFilasRouteImport } from './routes/_authenticated/painel.filas'
 import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authenticated/painel.grupos'
+import { Route as AuthenticatedPainelHistoricoRouteImport } from './routes/_authenticated/painel.historico'
+import { Route as AuthenticatedPainelIaRouteImport } from './routes/_authenticated/painel.ia'
 import { Route as AuthenticatedPainelLinksRouteImport } from './routes/_authenticated/painel.links'
 import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
+import { Route as AuthenticatedPainelMonitoramentoRouteImport } from './routes/_authenticated/painel.monitoramento'
 import { Route as AuthenticatedPainelProdutosRouteImport } from './routes/_authenticated/painel.produtos'
+import { Route as AuthenticatedPainelRelatoriosRouteImport } from './routes/_authenticated/painel.relatorios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -140,6 +144,17 @@ const AuthenticatedPainelGruposRoute =
     path: '/grupos',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelHistoricoRoute =
+  AuthenticatedPainelHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelIaRoute = AuthenticatedPainelIaRouteImport.update({
+  id: '/ia',
+  path: '/ia',
+  getParentRoute: () => AuthenticatedPainelRoute,
+} as any)
 const AuthenticatedPainelLinksRoute =
   AuthenticatedPainelLinksRouteImport.update({
     id: '/links',
@@ -152,10 +167,22 @@ const AuthenticatedPainelMensagensRoute =
     path: '/mensagens',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelMonitoramentoRoute =
+  AuthenticatedPainelMonitoramentoRouteImport.update({
+    id: '/monitoramento',
+    path: '/monitoramento',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelProdutosRoute =
   AuthenticatedPainelProdutosRouteImport.update({
     id: '/produtos',
     path: '/produtos',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelRelatoriosRoute =
+  AuthenticatedPainelRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
 
@@ -178,9 +205,13 @@ export interface FileRoutesByFullPath {
   '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/painel/ia': typeof AuthenticatedPainelIaRoute
   '/painel/links': typeof AuthenticatedPainelLinksRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesByTo {
@@ -201,9 +232,13 @@ export interface FileRoutesByTo {
   '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/painel/ia': typeof AuthenticatedPainelIaRoute
   '/painel/links': typeof AuthenticatedPainelLinksRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/painel': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesById {
@@ -227,9 +262,13 @@ export interface FileRoutesById {
   '/_authenticated/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/_authenticated/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/_authenticated/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/_authenticated/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/_authenticated/painel/ia': typeof AuthenticatedPainelIaRoute
   '/_authenticated/painel/links': typeof AuthenticatedPainelLinksRoute
   '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/_authenticated/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/_authenticated/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/_authenticated/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/_authenticated/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRouteTypes {
@@ -253,9 +292,13 @@ export interface FileRouteTypes {
     | '/painel/divulgador'
     | '/painel/filas'
     | '/painel/grupos'
+    | '/painel/historico'
+    | '/painel/ia'
     | '/painel/links'
     | '/painel/mensagens'
+    | '/painel/monitoramento'
     | '/painel/produtos'
+    | '/painel/relatorios'
     | '/painel/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -276,9 +319,13 @@ export interface FileRouteTypes {
     | '/painel/divulgador'
     | '/painel/filas'
     | '/painel/grupos'
+    | '/painel/historico'
+    | '/painel/ia'
     | '/painel/links'
     | '/painel/mensagens'
+    | '/painel/monitoramento'
     | '/painel/produtos'
+    | '/painel/relatorios'
     | '/painel'
   id:
     | '__root__'
@@ -301,9 +348,13 @@ export interface FileRouteTypes {
     | '/_authenticated/painel/divulgador'
     | '/_authenticated/painel/filas'
     | '/_authenticated/painel/grupos'
+    | '/_authenticated/painel/historico'
+    | '/_authenticated/painel/ia'
     | '/_authenticated/painel/links'
     | '/_authenticated/painel/mensagens'
+    | '/_authenticated/painel/monitoramento'
     | '/_authenticated/painel/produtos'
+    | '/_authenticated/painel/relatorios'
     | '/_authenticated/painel/'
   fileRoutesById: FileRoutesById
 }
@@ -463,6 +514,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelGruposRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/historico': {
+      id: '/_authenticated/painel/historico'
+      path: '/historico'
+      fullPath: '/painel/historico'
+      preLoaderRoute: typeof AuthenticatedPainelHistoricoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/ia': {
+      id: '/_authenticated/painel/ia'
+      path: '/ia'
+      fullPath: '/painel/ia'
+      preLoaderRoute: typeof AuthenticatedPainelIaRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/links': {
       id: '/_authenticated/painel/links'
       path: '/links'
@@ -477,11 +542,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelMensagensRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/monitoramento': {
+      id: '/_authenticated/painel/monitoramento'
+      path: '/monitoramento'
+      fullPath: '/painel/monitoramento'
+      preLoaderRoute: typeof AuthenticatedPainelMonitoramentoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/produtos': {
       id: '/_authenticated/painel/produtos'
       path: '/produtos'
       fullPath: '/painel/produtos'
       preLoaderRoute: typeof AuthenticatedPainelProdutosRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/relatorios': {
+      id: '/_authenticated/painel/relatorios'
+      path: '/relatorios'
+      fullPath: '/painel/relatorios'
+      preLoaderRoute: typeof AuthenticatedPainelRelatoriosRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
   }
@@ -495,9 +574,13 @@ interface AuthenticatedPainelRouteChildren {
   AuthenticatedPainelDivulgadorRoute: typeof AuthenticatedPainelDivulgadorRoute
   AuthenticatedPainelFilasRoute: typeof AuthenticatedPainelFilasRoute
   AuthenticatedPainelGruposRoute: typeof AuthenticatedPainelGruposRoute
+  AuthenticatedPainelHistoricoRoute: typeof AuthenticatedPainelHistoricoRoute
+  AuthenticatedPainelIaRoute: typeof AuthenticatedPainelIaRoute
   AuthenticatedPainelLinksRoute: typeof AuthenticatedPainelLinksRoute
   AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
+  AuthenticatedPainelMonitoramentoRoute: typeof AuthenticatedPainelMonitoramentoRoute
   AuthenticatedPainelProdutosRoute: typeof AuthenticatedPainelProdutosRoute
+  AuthenticatedPainelRelatoriosRoute: typeof AuthenticatedPainelRelatoriosRoute
   AuthenticatedPainelIndexRoute: typeof AuthenticatedPainelIndexRoute
 }
 
@@ -509,9 +592,13 @@ const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
   AuthenticatedPainelDivulgadorRoute: AuthenticatedPainelDivulgadorRoute,
   AuthenticatedPainelFilasRoute: AuthenticatedPainelFilasRoute,
   AuthenticatedPainelGruposRoute: AuthenticatedPainelGruposRoute,
+  AuthenticatedPainelHistoricoRoute: AuthenticatedPainelHistoricoRoute,
+  AuthenticatedPainelIaRoute: AuthenticatedPainelIaRoute,
   AuthenticatedPainelLinksRoute: AuthenticatedPainelLinksRoute,
   AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
+  AuthenticatedPainelMonitoramentoRoute: AuthenticatedPainelMonitoramentoRoute,
   AuthenticatedPainelProdutosRoute: AuthenticatedPainelProdutosRoute,
+  AuthenticatedPainelRelatoriosRoute: AuthenticatedPainelRelatoriosRoute,
   AuthenticatedPainelIndexRoute: AuthenticatedPainelIndexRoute,
 }
 
