@@ -32,25 +32,49 @@ export const runAiAssistant = createServerFn({ method: "POST" })
       "Se um link não for informado, use [LINK DO PRODUTO]. Responda apenas com o conteúdo pedido, sem explicações.";
     const user = `${TASKS[data.task]}${data.tone ? `\nTom desejado: ${data.tone}.` : ""}\n\nConteúdo:\n${data.text}`;
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: user },
-        ],
-      }),
+    const { createOpenAI } = await import("@ai-sdk/openai");
+    const { streamText } = await import("ai");
+    let runId: string | undefined;
+    const provider = createOpenAI({
+      baseURL: "https://ai.gateway.lovable.dev/v1",
+      apiKey: key,
+      headers: { "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
+      fetch: async (input: RequestInfo | URL, init?: RequestInit) => {
+        const headers = new Headers(init?.headers);
+        if (runId && !headers.has("X-Lovable-AIG-Run-ID")) headers.set("X-Lovable-AIG-Run-ID", runId);
+        const response = await fetch(input, { ...init, headers });
+        runId ??= response.headers.get("X-Lovable-AIG-Run-ID")?.trim() || undefined;
+        if (response.status === 429) throw new Error("Muitas solicitações à IA agora. Aguarde alguns segundos e tente de novo.");
+        if (response.status === 402) throw new Error("Os créditos de IA da plataforma acabaram. Avise o administrador.");
+        if (!response.ok) {
+          const body = await response.clone().text();
+          console.error(`AI gateway error [${response.status}]: ${body}`);
+        }
+        return response;
+      },
     });
-    if (res.status === 429) throw new Error("Muitas solicitações à IA agora. Aguarde alguns segundos e tente de novo.");
-    if (res.status === 402) throw new Error("Os créditos de IA da plataforma acabaram. Avise o administrador.");
-    if (!res.ok) {
-      console.error("AI gateway error", res.status, await res.text());
-      throw new Error("Não foi possível gerar o texto agora.");
+
+    const result = streamText({
+      model: provider.responses("openai/gpt-6-astra"),
+      instructions: system,
+      messages: [{ role: "user", content: user }],
+      providerOptions: {
+        openai: {
+          store: false,
+          forceReasoning: true,
+          reasoningEffort: "low",
+          reasoningSummary: "auto",
+          include: ["reasoning.encrypted_content"],
+        },
+      },
+    });
+    let content = "";
+    try {
+      content = (await result.text).trim();
+    } catch (err) {
+      console.error("AI generation failed", err);
+      throw new Error(err instanceof Error && err.message.startsWith("Muitas") || (err instanceof Error && err.message.startsWith("Os créditos")) ? err.message : "Não foi possível gerar o texto agora.");
     }
-    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
-    const content = json.choices?.[0]?.message?.content?.trim();
     if (!content) throw new Error("A IA não retornou conteúdo.");
     return { content };
   });
