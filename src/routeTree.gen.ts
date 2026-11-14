@@ -22,6 +22,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelDisparoRouteImport } from './routes/_authenticated/painel.disparo'
 import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authenticated/painel.grupos'
 import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
 import { Route as AuthenticatedPainelProdutosRouteImport } from './routes/_authenticated/painel.produtos'
@@ -91,6 +92,12 @@ const AuthenticatedPainelIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelDisparoRoute =
+  AuthenticatedPainelDisparoRouteImport.update({
+    id: '/disparo',
+    path: '/disparo',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelGruposRoute =
   AuthenticatedPainelGruposRouteImport.update({
     id: '/grupos',
@@ -122,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
@@ -138,6 +146,7 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
@@ -157,6 +166,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/disparo': typeof AuthenticatedPainelDisparoRoute
   '/_authenticated/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/_authenticated/painel/produtos': typeof AuthenticatedPainelProdutosRoute
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/painel'
+    | '/painel/disparo'
     | '/painel/grupos'
     | '/painel/mensagens'
     | '/painel/produtos'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/painel/disparo'
     | '/painel/grupos'
     | '/painel/mensagens'
     | '/painel/produtos'
@@ -210,6 +222,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/_authenticated/painel'
+    | '/_authenticated/painel/disparo'
     | '/_authenticated/painel/grupos'
     | '/_authenticated/painel/mensagens'
     | '/_authenticated/painel/produtos'
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/disparo': {
+      id: '/_authenticated/painel/disparo'
+      path: '/disparo'
+      fullPath: '/painel/disparo'
+      preLoaderRoute: typeof AuthenticatedPainelDisparoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/grupos': {
       id: '/_authenticated/painel/grupos'
       path: '/grupos'
@@ -348,6 +368,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelDisparoRoute: typeof AuthenticatedPainelDisparoRoute
   AuthenticatedPainelGruposRoute: typeof AuthenticatedPainelGruposRoute
   AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
   AuthenticatedPainelProdutosRoute: typeof AuthenticatedPainelProdutosRoute
@@ -355,6 +376,7 @@ interface AuthenticatedPainelRouteChildren {
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelDisparoRoute: AuthenticatedPainelDisparoRoute,
   AuthenticatedPainelGruposRoute: AuthenticatedPainelGruposRoute,
   AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
   AuthenticatedPainelProdutosRoute: AuthenticatedPainelProdutosRoute,
