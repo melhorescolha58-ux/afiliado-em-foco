@@ -70,7 +70,7 @@ function Home() {
               Suas ofertas nos grupos de WhatsApp, <span className="text-gradient">no piloto automático.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              Cadastre produtos, organize grupos, gere mensagens e programe filas de envio com intervalos. Tudo em um painel simples, pensado para quem vive de cupom e link de afiliado.
+              Automatize a divulgação de ofertas, cupons e links de afiliado em vários grupos de WhatsApp ao mesmo tempo. Programe seus envios, organize suas campanhas e deixe a plataforma trabalhar por você, enquanto você ganha tempo para focar no que realmente importa: vender mais.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild variant="hero" size="xl">
@@ -110,15 +110,15 @@ function Home() {
       <section className="border-y border-border bg-sidebar">
         <div className="mx-auto max-w-7xl px-5 py-20">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-extrabold">Do link à mensagem no grupo, em 4 passos</h2>
-            <p className="mt-3 text-muted-foreground">O fluxo completo de quem divulga ofertas todos os dias.</p>
+            <h2 className="text-4xl font-extrabold">Configure uma vez. Suas ofertas no automático.</h2>
+            <p className="mt-3 text-muted-foreground">Depois de configurar sua operação, a plataforma trabalha por você: encontra ofertas, prepara as divulgações e publica automaticamente nos seus grupos de WhatsApp.</p>
           </div>
           <ol className="mt-12 grid gap-5 md:grid-cols-4">
             {[
-              ["Cadastre o produto", "Nome, preços, cupom e seu link de afiliado."],
-              ["Gere a mensagem", "Modelo pronto ou com ajuda da IA."],
-              ["Escolha os grupos", "Por categoria ou seleção individual."],
-              ["Programe a fila", "Intervalos, horários e dias da semana."],
+              ["Conecte seu WhatsApp", "Vincule sua conta e prepare seus grupos para receber as publicações."],
+              ["Escolha seus grupos", "Defina em quais grupos suas ofertas serão divulgadas."],
+              ["Configure sua automação", "Personalize categorias, horários e intervalos de publicação."],
+              ["Deixe a plataforma trabalhar", "As ofertas são divulgadas automaticamente nos seus grupos, sem precisar enviar uma mensagem por vez."],
             ].map(([t, d], i) => (
               <li key={t} className="relative rounded-xl border border-border p-6">
                 <span className="font-mono text-sm text-primary">0{i + 1}</span>
@@ -154,7 +154,7 @@ function Home() {
           <div className="absolute inset-0 bg-hero" />
           <div className="relative grid items-center gap-8 md:grid-cols-[1fr_auto]">
             <div>
-              <h2 className="text-3xl font-extrabold md:text-4xl">De 10 a 1.000+ grupos, a plataforma cresce com você.</h2>
+              <h2 className="text-3xl font-extrabold md:text-4xl">De 1 a +1.000 grupos, a plataforma cresce com você.</h2>
               <ul className="mt-5 grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
                 {["Limites configuráveis por plano", "Seus dados isolados e protegidos", "Sem precisar deixar o navegador aberto", "Cuidados com a LGPD"].map((t) => (
                   <li key={t} className="flex items-center gap-2"><CheckCircle2 className="size-4 text-primary" /> {t}</li>
