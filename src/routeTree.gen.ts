@@ -22,7 +22,9 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelAutomacoesRouteImport } from './routes/_authenticated/painel.automacoes'
 import { Route as AuthenticatedPainelDisparoRouteImport } from './routes/_authenticated/painel.disparo'
+import { Route as AuthenticatedPainelDivulgadorRouteImport } from './routes/_authenticated/painel.divulgador'
 import { Route as AuthenticatedPainelFilasRouteImport } from './routes/_authenticated/painel.filas'
 import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authenticated/painel.grupos'
 import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
@@ -93,10 +95,22 @@ const AuthenticatedPainelIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelAutomacoesRoute =
+  AuthenticatedPainelAutomacoesRouteImport.update({
+    id: '/automacoes',
+    path: '/automacoes',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelDisparoRoute =
   AuthenticatedPainelDisparoRouteImport.update({
     id: '/disparo',
     path: '/disparo',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelDivulgadorRoute =
+  AuthenticatedPainelDivulgadorRouteImport.update({
+    id: '/divulgador',
+    path: '/divulgador',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
 const AuthenticatedPainelFilasRoute =
@@ -136,7 +150,9 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
   '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
@@ -154,7 +170,9 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
   '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
@@ -175,7 +193,9 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
   '/_authenticated/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/_authenticated/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
   '/_authenticated/painel/filas': typeof AuthenticatedPainelFilasRoute
   '/_authenticated/painel/grupos': typeof AuthenticatedPainelGruposRoute
   '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
@@ -196,7 +216,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/painel'
+    | '/painel/automacoes'
     | '/painel/disparo'
+    | '/painel/divulgador'
     | '/painel/filas'
     | '/painel/grupos'
     | '/painel/mensagens'
@@ -214,7 +236,9 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/painel/automacoes'
     | '/painel/disparo'
+    | '/painel/divulgador'
     | '/painel/filas'
     | '/painel/grupos'
     | '/painel/mensagens'
@@ -234,7 +258,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/_authenticated/painel'
+    | '/_authenticated/painel/automacoes'
     | '/_authenticated/painel/disparo'
+    | '/_authenticated/painel/divulgador'
     | '/_authenticated/painel/filas'
     | '/_authenticated/painel/grupos'
     | '/_authenticated/painel/mensagens'
@@ -349,11 +375,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/automacoes': {
+      id: '/_authenticated/painel/automacoes'
+      path: '/automacoes'
+      fullPath: '/painel/automacoes'
+      preLoaderRoute: typeof AuthenticatedPainelAutomacoesRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/disparo': {
       id: '/_authenticated/painel/disparo'
       path: '/disparo'
       fullPath: '/painel/disparo'
       preLoaderRoute: typeof AuthenticatedPainelDisparoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/divulgador': {
+      id: '/_authenticated/painel/divulgador'
+      path: '/divulgador'
+      fullPath: '/painel/divulgador'
+      preLoaderRoute: typeof AuthenticatedPainelDivulgadorRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
     '/_authenticated/painel/filas': {
@@ -388,7 +428,9 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelAutomacoesRoute: typeof AuthenticatedPainelAutomacoesRoute
   AuthenticatedPainelDisparoRoute: typeof AuthenticatedPainelDisparoRoute
+  AuthenticatedPainelDivulgadorRoute: typeof AuthenticatedPainelDivulgadorRoute
   AuthenticatedPainelFilasRoute: typeof AuthenticatedPainelFilasRoute
   AuthenticatedPainelGruposRoute: typeof AuthenticatedPainelGruposRoute
   AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
@@ -397,7 +439,9 @@ interface AuthenticatedPainelRouteChildren {
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelAutomacoesRoute: AuthenticatedPainelAutomacoesRoute,
   AuthenticatedPainelDisparoRoute: AuthenticatedPainelDisparoRoute,
+  AuthenticatedPainelDivulgadorRoute: AuthenticatedPainelDivulgadorRoute,
   AuthenticatedPainelFilasRoute: AuthenticatedPainelFilasRoute,
   AuthenticatedPainelGruposRoute: AuthenticatedPainelGruposRoute,
   AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
