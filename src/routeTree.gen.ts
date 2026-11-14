@@ -22,6 +22,20 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelAutomacoesRouteImport } from './routes/_authenticated/painel.automacoes'
+import { Route as AuthenticatedPainelCampanhasRouteImport } from './routes/_authenticated/painel.campanhas'
+import { Route as AuthenticatedPainelConexoesRouteImport } from './routes/_authenticated/painel.conexoes'
+import { Route as AuthenticatedPainelDisparoRouteImport } from './routes/_authenticated/painel.disparo'
+import { Route as AuthenticatedPainelDivulgadorRouteImport } from './routes/_authenticated/painel.divulgador'
+import { Route as AuthenticatedPainelFilasRouteImport } from './routes/_authenticated/painel.filas'
+import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authenticated/painel.grupos'
+import { Route as AuthenticatedPainelHistoricoRouteImport } from './routes/_authenticated/painel.historico'
+import { Route as AuthenticatedPainelIaRouteImport } from './routes/_authenticated/painel.ia'
+import { Route as AuthenticatedPainelLinksRouteImport } from './routes/_authenticated/painel.links'
+import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
+import { Route as AuthenticatedPainelMonitoramentoRouteImport } from './routes/_authenticated/painel.monitoramento'
+import { Route as AuthenticatedPainelProdutosRouteImport } from './routes/_authenticated/painel.produtos'
+import { Route as AuthenticatedPainelRelatoriosRouteImport } from './routes/_authenticated/painel.relatorios'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +102,89 @@ const AuthenticatedPainelIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelAutomacoesRoute =
+  AuthenticatedPainelAutomacoesRouteImport.update({
+    id: '/automacoes',
+    path: '/automacoes',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelCampanhasRoute =
+  AuthenticatedPainelCampanhasRouteImport.update({
+    id: '/campanhas',
+    path: '/campanhas',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelConexoesRoute =
+  AuthenticatedPainelConexoesRouteImport.update({
+    id: '/conexoes',
+    path: '/conexoes',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelDisparoRoute =
+  AuthenticatedPainelDisparoRouteImport.update({
+    id: '/disparo',
+    path: '/disparo',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelDivulgadorRoute =
+  AuthenticatedPainelDivulgadorRouteImport.update({
+    id: '/divulgador',
+    path: '/divulgador',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelFilasRoute =
+  AuthenticatedPainelFilasRouteImport.update({
+    id: '/filas',
+    path: '/filas',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelGruposRoute =
+  AuthenticatedPainelGruposRouteImport.update({
+    id: '/grupos',
+    path: '/grupos',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelHistoricoRoute =
+  AuthenticatedPainelHistoricoRouteImport.update({
+    id: '/historico',
+    path: '/historico',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelIaRoute = AuthenticatedPainelIaRouteImport.update({
+  id: '/ia',
+  path: '/ia',
+  getParentRoute: () => AuthenticatedPainelRoute,
+} as any)
+const AuthenticatedPainelLinksRoute =
+  AuthenticatedPainelLinksRouteImport.update({
+    id: '/links',
+    path: '/links',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelMensagensRoute =
+  AuthenticatedPainelMensagensRouteImport.update({
+    id: '/mensagens',
+    path: '/mensagens',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelMonitoramentoRoute =
+  AuthenticatedPainelMonitoramentoRouteImport.update({
+    id: '/monitoramento',
+    path: '/monitoramento',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelProdutosRoute =
+  AuthenticatedPainelProdutosRouteImport.update({
+    id: '/produtos',
+    path: '/produtos',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelRelatoriosRoute =
+  AuthenticatedPainelRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -101,6 +198,20 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
+  '/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
+  '/painel/filas': typeof AuthenticatedPainelFilasRoute
+  '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/painel/ia': typeof AuthenticatedPainelIaRoute
+  '/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
+  '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesByTo {
@@ -114,6 +225,20 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
+  '/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
+  '/painel/filas': typeof AuthenticatedPainelFilasRoute
+  '/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/painel/ia': typeof AuthenticatedPainelIaRoute
+  '/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
+  '/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/painel': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesById {
@@ -130,6 +255,20 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/automacoes': typeof AuthenticatedPainelAutomacoesRoute
+  '/_authenticated/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
+  '/_authenticated/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/_authenticated/painel/disparo': typeof AuthenticatedPainelDisparoRoute
+  '/_authenticated/painel/divulgador': typeof AuthenticatedPainelDivulgadorRoute
+  '/_authenticated/painel/filas': typeof AuthenticatedPainelFilasRoute
+  '/_authenticated/painel/grupos': typeof AuthenticatedPainelGruposRoute
+  '/_authenticated/painel/historico': typeof AuthenticatedPainelHistoricoRoute
+  '/_authenticated/painel/ia': typeof AuthenticatedPainelIaRoute
+  '/_authenticated/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
+  '/_authenticated/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
+  '/_authenticated/painel/produtos': typeof AuthenticatedPainelProdutosRoute
+  '/_authenticated/painel/relatorios': typeof AuthenticatedPainelRelatoriosRoute
   '/_authenticated/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRouteTypes {
@@ -146,6 +285,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/painel'
+    | '/painel/automacoes'
+    | '/painel/campanhas'
+    | '/painel/conexoes'
+    | '/painel/disparo'
+    | '/painel/divulgador'
+    | '/painel/filas'
+    | '/painel/grupos'
+    | '/painel/historico'
+    | '/painel/ia'
+    | '/painel/links'
+    | '/painel/mensagens'
+    | '/painel/monitoramento'
+    | '/painel/produtos'
+    | '/painel/relatorios'
     | '/painel/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -159,6 +312,20 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/painel/automacoes'
+    | '/painel/campanhas'
+    | '/painel/conexoes'
+    | '/painel/disparo'
+    | '/painel/divulgador'
+    | '/painel/filas'
+    | '/painel/grupos'
+    | '/painel/historico'
+    | '/painel/ia'
+    | '/painel/links'
+    | '/painel/mensagens'
+    | '/painel/monitoramento'
+    | '/painel/produtos'
+    | '/painel/relatorios'
     | '/painel'
   id:
     | '__root__'
@@ -174,6 +341,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/termos'
     | '/_authenticated/painel'
+    | '/_authenticated/painel/automacoes'
+    | '/_authenticated/painel/campanhas'
+    | '/_authenticated/painel/conexoes'
+    | '/_authenticated/painel/disparo'
+    | '/_authenticated/painel/divulgador'
+    | '/_authenticated/painel/filas'
+    | '/_authenticated/painel/grupos'
+    | '/_authenticated/painel/historico'
+    | '/_authenticated/painel/ia'
+    | '/_authenticated/painel/links'
+    | '/_authenticated/painel/mensagens'
+    | '/_authenticated/painel/monitoramento'
+    | '/_authenticated/painel/produtos'
+    | '/_authenticated/painel/relatorios'
     | '/_authenticated/painel/'
   fileRoutesById: FileRoutesById
 }
@@ -284,14 +465,140 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/automacoes': {
+      id: '/_authenticated/painel/automacoes'
+      path: '/automacoes'
+      fullPath: '/painel/automacoes'
+      preLoaderRoute: typeof AuthenticatedPainelAutomacoesRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/campanhas': {
+      id: '/_authenticated/painel/campanhas'
+      path: '/campanhas'
+      fullPath: '/painel/campanhas'
+      preLoaderRoute: typeof AuthenticatedPainelCampanhasRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/conexoes': {
+      id: '/_authenticated/painel/conexoes'
+      path: '/conexoes'
+      fullPath: '/painel/conexoes'
+      preLoaderRoute: typeof AuthenticatedPainelConexoesRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/disparo': {
+      id: '/_authenticated/painel/disparo'
+      path: '/disparo'
+      fullPath: '/painel/disparo'
+      preLoaderRoute: typeof AuthenticatedPainelDisparoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/divulgador': {
+      id: '/_authenticated/painel/divulgador'
+      path: '/divulgador'
+      fullPath: '/painel/divulgador'
+      preLoaderRoute: typeof AuthenticatedPainelDivulgadorRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/filas': {
+      id: '/_authenticated/painel/filas'
+      path: '/filas'
+      fullPath: '/painel/filas'
+      preLoaderRoute: typeof AuthenticatedPainelFilasRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/grupos': {
+      id: '/_authenticated/painel/grupos'
+      path: '/grupos'
+      fullPath: '/painel/grupos'
+      preLoaderRoute: typeof AuthenticatedPainelGruposRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/historico': {
+      id: '/_authenticated/painel/historico'
+      path: '/historico'
+      fullPath: '/painel/historico'
+      preLoaderRoute: typeof AuthenticatedPainelHistoricoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/ia': {
+      id: '/_authenticated/painel/ia'
+      path: '/ia'
+      fullPath: '/painel/ia'
+      preLoaderRoute: typeof AuthenticatedPainelIaRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/links': {
+      id: '/_authenticated/painel/links'
+      path: '/links'
+      fullPath: '/painel/links'
+      preLoaderRoute: typeof AuthenticatedPainelLinksRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/mensagens': {
+      id: '/_authenticated/painel/mensagens'
+      path: '/mensagens'
+      fullPath: '/painel/mensagens'
+      preLoaderRoute: typeof AuthenticatedPainelMensagensRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/monitoramento': {
+      id: '/_authenticated/painel/monitoramento'
+      path: '/monitoramento'
+      fullPath: '/painel/monitoramento'
+      preLoaderRoute: typeof AuthenticatedPainelMonitoramentoRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/produtos': {
+      id: '/_authenticated/painel/produtos'
+      path: '/produtos'
+      fullPath: '/painel/produtos'
+      preLoaderRoute: typeof AuthenticatedPainelProdutosRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/relatorios': {
+      id: '/_authenticated/painel/relatorios'
+      path: '/relatorios'
+      fullPath: '/painel/relatorios'
+      preLoaderRoute: typeof AuthenticatedPainelRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
   }
 }
 
 interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelAutomacoesRoute: typeof AuthenticatedPainelAutomacoesRoute
+  AuthenticatedPainelCampanhasRoute: typeof AuthenticatedPainelCampanhasRoute
+  AuthenticatedPainelConexoesRoute: typeof AuthenticatedPainelConexoesRoute
+  AuthenticatedPainelDisparoRoute: typeof AuthenticatedPainelDisparoRoute
+  AuthenticatedPainelDivulgadorRoute: typeof AuthenticatedPainelDivulgadorRoute
+  AuthenticatedPainelFilasRoute: typeof AuthenticatedPainelFilasRoute
+  AuthenticatedPainelGruposRoute: typeof AuthenticatedPainelGruposRoute
+  AuthenticatedPainelHistoricoRoute: typeof AuthenticatedPainelHistoricoRoute
+  AuthenticatedPainelIaRoute: typeof AuthenticatedPainelIaRoute
+  AuthenticatedPainelLinksRoute: typeof AuthenticatedPainelLinksRoute
+  AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
+  AuthenticatedPainelMonitoramentoRoute: typeof AuthenticatedPainelMonitoramentoRoute
+  AuthenticatedPainelProdutosRoute: typeof AuthenticatedPainelProdutosRoute
+  AuthenticatedPainelRelatoriosRoute: typeof AuthenticatedPainelRelatoriosRoute
   AuthenticatedPainelIndexRoute: typeof AuthenticatedPainelIndexRoute
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelAutomacoesRoute: AuthenticatedPainelAutomacoesRoute,
+  AuthenticatedPainelCampanhasRoute: AuthenticatedPainelCampanhasRoute,
+  AuthenticatedPainelConexoesRoute: AuthenticatedPainelConexoesRoute,
+  AuthenticatedPainelDisparoRoute: AuthenticatedPainelDisparoRoute,
+  AuthenticatedPainelDivulgadorRoute: AuthenticatedPainelDivulgadorRoute,
+  AuthenticatedPainelFilasRoute: AuthenticatedPainelFilasRoute,
+  AuthenticatedPainelGruposRoute: AuthenticatedPainelGruposRoute,
+  AuthenticatedPainelHistoricoRoute: AuthenticatedPainelHistoricoRoute,
+  AuthenticatedPainelIaRoute: AuthenticatedPainelIaRoute,
+  AuthenticatedPainelLinksRoute: AuthenticatedPainelLinksRoute,
+  AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
+  AuthenticatedPainelMonitoramentoRoute: AuthenticatedPainelMonitoramentoRoute,
+  AuthenticatedPainelProdutosRoute: AuthenticatedPainelProdutosRoute,
+  AuthenticatedPainelRelatoriosRoute: AuthenticatedPainelRelatoriosRoute,
   AuthenticatedPainelIndexRoute: AuthenticatedPainelIndexRoute,
 }
 
