@@ -192,3 +192,13 @@
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Google sign-in button: brand-mandated dark theme (Google identity guidelines) */
+.google-btn {
+  background-color: #131314;
+  border-color: #8e918f;
+  color: #e3e3e3;
+}
+.google-btn:hover {
+  filter: brightness(1.15);
+}
