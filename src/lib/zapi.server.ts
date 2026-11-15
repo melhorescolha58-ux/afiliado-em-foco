@@ -22,9 +22,9 @@ export async function loadZapiCredentials(
   } catch {
     throw new Error("Não foi possível ler os dados protegidos. Salve as credenciais da Z-API novamente.");
   }
-  const instanceId = values.instanceId?.trim();
-  const token = values.token?.trim();
-  const clientToken = values.clientToken?.trim();
+  const instanceId = values["instanceId"]?.trim();
+  const token = values["token"]?.trim();
+  const clientToken = values["clientToken"]?.trim();
   if (!instanceId || !token || !clientToken) throw new Error("As credenciais da Z-API estão incompletas. Salve-as novamente.");
   return { connection, credentials: { instanceId, token, clientToken } };
 }

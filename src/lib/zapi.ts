@@ -24,9 +24,9 @@ export function sanitizeZapiGroups(value: unknown): ZapiGroup[] {
   for (const item of value) {
     if (!item || typeof item !== "object" || Array.isArray(item)) continue;
     const row = item as Record<string, unknown>;
-    const name = typeof row.name === "string" ? row.name.trim().slice(0, 120) : "";
-    const phone = typeof row.phone === "string" ? row.phone.trim().slice(0, 160) : "";
-    if (row.isGroup !== true || !name || !phone) continue;
+    const name = typeof row["name"] === "string" ? row["name"].trim().slice(0, 120) : "";
+    const phone = typeof row["phone"] === "string" ? row["phone"].trim().slice(0, 160) : "";
+    if (row["isGroup"] !== true || !name || !phone) continue;
     groups.set(phone, { name, phone, isGroup: true });
   }
   return [...groups.values()];

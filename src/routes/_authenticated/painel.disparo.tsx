@@ -76,7 +76,7 @@ function DispatchPage() {
             ...(product ? { productId: product.id } : {}),
             ...(campaign ? { campaignId: campaign.id } : {}),
           } });
-          results.push({ name: group.name, status: "sent", error: response.historySaved ? undefined : "A Z-API aceitou o envio, mas o histórico não pôde ser salvo." });
+          results.push({ name: group.name, status: "sent", ...(response.historySaved ? {} : { error: "A Z-API aceitou o envio, mas o histórico não pôde ser salvo." }) });
         } catch (error) {
           results.push({ name: group.name, status: "failed", error: errorMessage(error) });
         }

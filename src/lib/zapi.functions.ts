@@ -38,15 +38,15 @@ export const getZapiQrCode = createServerFn({ method: "POST" })
     const key = encryptionKeyFrom(process.env["WHATSAPP_ENCRYPTION_KEY"]);
     const { credentials } = await loadZapiCredentials(context.supabase, context.userId, data.connectionId, key);
     const body = await zapiJson(await zapiRequest(credentials, "/qr-code")) as Record<string, unknown>;
-    if (typeof body.value === "string") {
-      const qrCode = normalizeZapiQrCode(body.value);
+    if (typeof body["value"] === "string") {
+      const qrCode = normalizeZapiQrCode(body["value"]);
       if (!qrCode) throw new Error("A Z-API retornou um QR Code inválido.");
       return { qrCode, requiresPasskey: false, message: null as string | null };
     }
-    if (body.challenge) {
+    if (body["challenge"]) {
       return { qrCode: null, requiresPasskey: true, message: "Este aparelho pediu uma verificação adicional. Conclua a conexão no painel da Z-API e depois atualize o status aqui." };
     }
-    const message = typeof body.error === "string" ? body.error.slice(0, 300) : "A Z-API não retornou um QR Code. Verifique se a instância já está conectada.";
+    const message = typeof body["error"] === "string" ? body["error"].slice(0, 300) : "A Z-API não retornou um QR Code. Verifique se a instância já está conectada.";
     return { qrCode: null, requiresPasskey: false, message };
   });
 
