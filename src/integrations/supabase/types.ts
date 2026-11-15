@@ -204,6 +204,32 @@ export type Database = {
         }
         Relationships: []
       }
+      connection_credentials: {
+        Row: {
+          connection_id: string
+          encrypted_payload: string
+          updated_at: string
+        }
+        Insert: {
+          connection_id: string
+          encrypted_payload: string
+          updated_at?: string
+        }
+        Update: {
+          connection_id?: string
+          encrypted_payload?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connection_credentials_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: true
+            referencedRelation: "connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connections: {
         Row: {
           created_at: string
@@ -1156,6 +1182,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      import_zapi_groups: {
+        Args: { p_connection_id: string; p_groups: Json; p_user_id: string }
+        Returns: Json
+      }
       is_account_active: { Args: { _user_id: string }; Returns: boolean }
       save_marketplace_configuration: {
         Args: {
@@ -1163,6 +1193,15 @@ export type Database = {
           p_config: Json
           p_encrypted?: string
           p_marketplace_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
+      save_zapi_connection_credentials: {
+        Args: {
+          p_connection_id: string
+          p_encrypted: string
+          p_instance_id: string
           p_user_id: string
         }
         Returns: undefined

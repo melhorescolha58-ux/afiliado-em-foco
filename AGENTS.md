@@ -33,3 +33,4 @@ use the editor.
 - Marketplace configuration writes go through authenticated server functions and a service-only atomic RPC; browser clients only read their own non-secret settings to prevent forged validation and credential exposure.
 - Marketplace credentials use versioned AES-GCM with a managed key and owner/partner-bound associated data; never return plaintext or ciphertext to the browser.
 - Configuration activation enables use of saved identifiers, not external validation; no conversion adapter is advertised before a real approved integration succeeds.
+- WhatsApp uses per-connection Z-API credentials encrypted with a managed key and owner/connection-bound AES-GCM; only authenticated server functions may call the provider or write integration status, and credentials or delivery success must never be simulated.
