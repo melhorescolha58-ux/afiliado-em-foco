@@ -8,12 +8,14 @@ import { AppShell } from "@/components/app/AppShell";
 import { PageHeader, StatCard, StatusBadge } from "@/components/app/ui";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate, errorMessage } from "@/lib/format";
+import { MarketplaceAdmin } from "@/components/app/MarketplaceAdmin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Administração — Afiliado Automático" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async ({ context }) => {
     const userId = (context as { user?: { id: string } }).user?.id;
-    const { data } = await supabase.rpc("has_role", { _user_id: userId!, _role: "admin" });
+    if (!userId) throw redirect({ to: "/painel" });
+    const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
     if (!data) throw redirect({ to: "/painel" });
   },
   component: AdminPage,
@@ -38,9 +40,10 @@ function AdminPage() {
   async function toggle(id: string, status: string) {
     const next = status === "active" ? "suspended" : "active";
     const { error } = await supabase.from("profiles").update({ status: next }).eq("id", id);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     const { data: u } = await supabase.auth.getUser();
-    await supabase.from("admin_logs").insert({ admin_id: u.user!.id, action: next === "suspended" ? "suspend_account" : "activate_account", target_user_id: id });
+    if (!u.user) return;
+    await supabase.from("admin_logs").insert({ admin_id: u.user.id, action: next === "suspended" ? "suspend_account" : "activate_account", target_user_id: id });
     toast.success(next === "suspended" ? "Conta suspensa" : "Conta reativada");
     qc.invalidateQueries({ queryKey: ["admin-overview"] });
   }
@@ -74,6 +77,7 @@ function AdminPage() {
           </TableBody>
         </Table>
       </div>
+      <MarketplaceAdmin />
     </AppShell>
   );
 }

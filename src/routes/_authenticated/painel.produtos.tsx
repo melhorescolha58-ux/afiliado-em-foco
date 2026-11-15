@@ -18,6 +18,8 @@ import type { Tables } from "@/integrations/supabase/types";
 import { STORES, detectStore, storeLabel } from "@/lib/stores";
 import { formatBRL, formatDate } from "@/lib/format";
 import { discountPercent } from "@/lib/message-builder";
+import { useMarketplaces } from "@/hooks/use-marketplaces";
+import { detectMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/produtos")({
   head: () => ({ meta: [{ title: "Produtos e ofertas — Afiliado Automático" }] }),
@@ -41,6 +43,7 @@ type Form = z.infer<typeof schema>;
 const toNum = (v?: string) => (v ? Number(v.replace(",", ".")) : null);
 
 export function ProductDialog({ open, onOpenChange, product }: { open: boolean; onOpenChange: (o: boolean) => void; product: Tables<"products"> | null }) {
+  const { catalogue } = useMarketplaces();
   const save = useSaveRow("products", [], product ? "Produto atualizado" : "Produto cadastrado");
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Form>({
     resolver: zodResolver(schema),
@@ -70,7 +73,7 @@ export function ProductDialog({ open, onOpenChange, product }: { open: boolean; 
           <div className="space-y-1.5 sm:col-span-2"><Label>Nome do produto</Label><Input {...register("name")} /><FieldError msg={errors.name?.message} /></div>
           <div className="space-y-1.5 sm:col-span-2">
             <Label>Link original do produto</Label>
-            <Input {...register("original_url", { onChange: (e) => { const s = detectStore(e.target.value); if (s !== "outra") setValue("store", s); } })} placeholder="https://..." />
+            <Input {...register("original_url", { onChange: (e) => { const s = detectMarketplace(e.target.value, catalogue); if (s !== "outra") setValue("store", s); } })} placeholder="https://..." />
             <FieldError msg={errors.original_url?.message} />
           </div>
           <div className="space-y-1.5 sm:col-span-2">
@@ -82,7 +85,7 @@ export function ProductDialog({ open, onOpenChange, product }: { open: boolean; 
             <Label>Loja</Label>
             <Select value={watch("store")} onValueChange={(v) => setValue("store", v)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
-              <SelectContent>{STORES.map((s) => <SelectItem key={s.id} value={s.id}>{s.label}</SelectItem>)}</SelectContent>
+              <SelectContent><SelectItem value="outra">Outra loja</SelectItem>{catalogue.filter((m) => m.is_available || m.id === product?.store).map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
             </Select>
           </div>
           <div className="space-y-1.5"><Label>Categoria</Label><Input {...register("category")} placeholder="Eletrônicos" /></div>

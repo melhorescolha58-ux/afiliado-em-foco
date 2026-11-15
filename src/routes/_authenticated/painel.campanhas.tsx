@@ -11,15 +11,19 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { PageHeader, EmptyState, ConfirmButton, StatusBadge } from "@/components/app/ui";
 import { useRows, useSaveRow, useDeleteRows } from "@/lib/db";
 import { formatDate } from "@/lib/format";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useMarketplaces } from "@/hooks/use-marketplaces";
+import { usableMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/campanhas")({
   head: () => ({ meta: [{ title: "Campanhas — Afiliado Automático" }] }),
   component: CampaignsPage,
 });
 
-type Draft = { id?: string; name: string; description: string; status: string };
+type Draft = { id?: string; name: string; description: string; status: string; marketplace_ids?: string[] };
 
 function CampaignsPage() {
+  const { catalogue, configs } = useMarketplaces();
   const { data: campaigns = [] } = useRows("campaigns");
   const { data: logs = [] } = useRows("send_logs", { select: "id, campaign_id" });
   const { data: queues = [] } = useRows("queues", { select: "id, campaign_id" });
@@ -29,7 +33,7 @@ function CampaignsPage() {
 
   async function submit() {
     if (!d) return;
-    if (d.name.trim().length < 2) return toast.error("Dê um nome à campanha.");
+    if (d.name.trim().length < 2) { toast.error("Dê um nome à campanha."); return; }
     await save.mutateAsync({ ...d, name: d.name.trim(), description: d.description.trim() || null });
     setD(null);
   }
@@ -51,7 +55,7 @@ function CampaignsPage() {
               </div>
               <p className="mt-auto pt-4 text-xs text-muted-foreground">Criada em {formatDate(c.created_at)}</p>
               <div className="mt-3 flex gap-1 border-t border-border pt-3">
-                <Button size="sm" variant="ghost" onClick={() => setD({ id: c.id, name: c.name, description: c.description ?? "", status: c.status })}><Pencil /> Editar</Button>
+                <Button size="sm" variant="ghost" onClick={() => setD({ id: c.id, name: c.name, description: c.description ?? "", status: c.status, marketplace_ids: c.marketplace_ids })}><Pencil /> Editar</Button>
                 <ConfirmButton trigger={<Button size="sm" variant="ghost"><Trash2 /> Excluir</Button>} title="Excluir campanha?" description="Filas e envios continuam no histórico, sem vínculo com a campanha." confirmLabel="Excluir" onConfirm={() => del.mutate([c.id])} />
               </div>
             </div>
@@ -65,6 +69,7 @@ function CampaignsPage() {
             <div className="space-y-4">
               <div className="space-y-1.5"><Label>Nome</Label><Input value={d.name} onChange={(e) => setD({ ...d, name: e.target.value })} maxLength={120} /></div>
               <div className="space-y-1.5"><Label>Descrição</Label><Textarea rows={3} value={d.description} onChange={(e) => setD({ ...d, description: e.target.value })} maxLength={500} /></div>
+              <div className="space-y-2"><Label>Lojas participantes</Label><p className="text-xs text-muted-foreground">Nenhuma seleção: todas as lojas. Operações automáticas exigirão configurações ativas e integração disponível.</p>{catalogue.map((m) => <label key={m.id} className="flex items-center gap-2 text-sm"><Checkbox checked={d.marketplace_ids?.includes(m.id) ?? false} disabled={!usableMarketplace(m, configs.find((c) => c.marketplace_id === m.id)) && !d.marketplace_ids?.includes(m.id)} onCheckedChange={(checked) => setD({...d, marketplace_ids: checked ? [...(d.marketplace_ids ?? []), m.id] : (d.marketplace_ids ?? []).filter((id) => id !== m.id)})} />{m.name}</label>)}</div>
               <div className="space-y-1.5">
                 <Label>Status</Label>
                 <Select value={d.status} onValueChange={(v) => setD({ ...d, status: v })}>
