@@ -11,7 +11,7 @@ import { useMarketplaces } from "@/hooks/use-marketplaces";
 import { categories, configurationStatus, usableMarketplace, type Marketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/lojas")({
-  validateSearch: (search: Record<string, unknown>): { loja?: string } => ({ loja: typeof search.loja === "string" ? search.loja : undefined }),
+  validateSearch: (search: Record<string, unknown>): { loja?: string } => typeof search["loja"] === "string" ? { loja: search["loja"] } : {},
   head: () => ({ meta: [{ title: "Lojas — Afiliado Automático" }, { name: "description", content: "Configure e gerencie suas contas de afiliado, identificadores e tutoriais de marketplaces." }, { property: "og:title", content: "Lojas — Afiliado Automático" }, { property: "og:description", content: "Suas contas de afiliado organizadas em um só lugar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: StoresPage,
 });
@@ -38,7 +38,7 @@ function StoresPage() {
     <div className="mb-6 flex flex-wrap gap-3">
       <div className="relative min-w-48 flex-1"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input aria-label="Pesquisar lojas" placeholder="Pesquisar lojas" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" /></div>
       <Select value={category} onValueChange={setCategory}><SelectTrigger aria-label="Filtrar categoria" className="w-full sm:w-52"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">Todas as categorias</SelectItem>{Object.entries(categories).map(([id,label]) => <SelectItem key={id} value={id}>{label}</SelectItem>)}</SelectContent></Select>
-      <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Filtrar status" className="w-full sm:w-48"><SelectValue /></SelectTrigger><SelectContent>{[["all","Todos os status"],["none","Não configurado"],["configured","Configurado"],["active","Ativo"],["inactive","Desativado"],["pending","Validação pendente"],["error","Erro de configuração"]].map(([id,label]) => <SelectItem key={id} value={id}>{label}</SelectItem>)}</SelectContent></Select>
+      <Select value={status} onValueChange={setStatus}><SelectTrigger aria-label="Filtrar status" className="w-full sm:w-48"><SelectValue /></SelectTrigger><SelectContent>{([{id:"all",label:"Todos os status"},{id:"none",label:"Não configurado"},{id:"configured",label:"Configurado"},{id:"active",label:"Ativo"},{id:"inactive",label:"Desativado"},{id:"pending",label:"Validação pendente"},{id:"error",label:"Erro de configuração"}]).map(({id,label}) => <SelectItem key={id} value={id}>{label}</SelectItem>)}</SelectContent></Select>
     </div>
     {error ? <p role="alert" className="text-destructive">Não foi possível carregar as lojas. Atualize a página para tentar novamente.</p> : isLoading ? <LoadingRows rows={3} /> : !filtered.length ? <EmptyState icon={Store} title="Nenhuma loja encontrada" text="Não há lojas para os filtros selecionados." /> : <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
       {filtered.map((m) => {

@@ -139,6 +139,6 @@ export function LoadingRows({ rows = 5 }: { rows?: number }) {
   );
 }
 
-export function FieldError({ msg }: { msg?: string }) {
+export function FieldError({ msg }: { msg?: string | undefined }) {
   return msg ? <p className="text-xs text-destructive">{msg}</p> : null;
 }

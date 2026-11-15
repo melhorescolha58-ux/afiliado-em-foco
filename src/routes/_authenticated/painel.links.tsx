@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Link2, Save, Trash2, Search, ExternalLink } from "lucide-react";
@@ -13,6 +13,8 @@ import { CopyButton } from "@/components/app/CopyButton";
 import { useRows, useSaveRow, useDeleteRows } from "@/lib/db";
 import { STORES, detectStore, isValidUrl, storeLabel, type StoreId } from "@/lib/stores";
 import { formatDate } from "@/lib/format";
+import { useMarketplaces } from "@/hooks/use-marketplaces";
+import { detectMarketplace, usableMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/links")({
   head: () => ({ meta: [{ title: "Gerador de links — Afiliado Automático" }] }),
@@ -20,29 +22,39 @@ export const Route = createFileRoute("/_authenticated/painel/links")({
 });
 
 function LinksPage() {
+  const { catalogue, configs } = useMarketplaces();
   const { data: links = [] } = useRows("affiliate_links");
   const { data: products = [] } = useRows("products");
   const save = useSaveRow("affiliate_links", [], "Link salvo");
   const saveProduct = useSaveRow("products", [], "");
   const del = useDeleteRows("affiliate_links");
   const [original, setOriginal] = useState("");
-  const [store, setStore] = useState<StoreId | null>(null);
+  const [store, setStore] = useState<string | null>(null);
   const [tag, setTag] = useState("");
   const [affiliate, setAffiliate] = useState("");
   const [productId, setProductId] = useState("none");
 
   function identify() {
-    if (!isValidUrl(original)) return toast.error("Cole um link válido começando com https://");
-    setStore(detectStore(original));
+    if (!isValidUrl(original)) { toast.error("Cole um link válido começando com https://"); return; }
+    const id = detectMarketplace(original, catalogue);
+    setStore(id);
+    const saved = configs.find((c) => c.marketplace_id === id);
+    const values = saved?.config;
+    if (values && typeof values === "object" && !Array.isArray(values)) {
+      const identifier = values["tag"] ?? values["affiliate_id"] ?? values["publisher_id"] ?? values["tracking_id"];
+      setTag(typeof identifier === "string" ? identifier : "");
+    } else setTag("");
   }
   async function submit() {
     if (!store) return;
-    if (!isValidUrl(affiliate)) return toast.error("Cole o link de afiliado gerado no programa da loja.");
+    if (!isValidUrl(affiliate)) { toast.error("Cole o link de afiliado gerado no programa da loja."); return; }
     await save.mutateAsync({ store, original_url: original.trim(), affiliate_url: affiliate.trim(), affiliate_tag: tag.trim() || null, method: "manual", product_id: productId !== "none" ? productId : null });
     if (productId !== "none") await saveProduct.mutateAsync({ id: productId, affiliate_url: affiliate.trim() });
     setOriginal(""); setAffiliate(""); setStore(null); setProductId("none");
   }
   const info = STORES.find((s) => s.id === store);
+  const marketplace = catalogue.find((m) => m.id === store);
+  const configuration = configs.find((c) => c.marketplace_id === store);
 
   return (
     <>
@@ -50,6 +62,8 @@ function LinksPage() {
       <DevNotice>
         A geração automática via integrações oficiais (Shopee, Mercado Livre, Amazon e Magazine Luiza) está em desenvolvimento. <b>Não alteramos URLs por conta própria</b>: por enquanto, gere o link no painel do programa de afiliados e cole abaixo.
       </DevNotice>
+      {marketplace && !configuration && <div className="mb-5 space-y-3 border-l-2 border-warning pl-4"><p className="text-sm">Você ainda não configurou sua conta de afiliado desta loja. Acesse Configurar Lojas para realizar a configuração.</p><Button asChild variant="outline" size="sm"><Link to="/painel/lojas" search={{ loja: marketplace.id }}>Configurar {marketplace.name}</Link></Button></div>}
+      {marketplace && configuration && <div className="mb-5 flex flex-wrap items-center gap-3"><Badge variant={usableMarketplace(marketplace, configuration) ? "lime" : "warning"}>{usableMarketplace(marketplace, configuration) ? "Configuração ativa · validação pendente" : "Loja desativada para novas operações automáticas"}</Badge><Button asChild variant="link" size="sm"><Link to="/painel/lojas" search={{ loja: marketplace.id }}>Editar configuração</Link></Button></div>}
       <div className="surface-card p-6">
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-4">

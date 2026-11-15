@@ -14,7 +14,7 @@ import { fieldsOf, videoEmbed, type Marketplace, type MarketplaceConfig } from "
 import { saveMarketplaceConfig, deleteMarketplaceConfig } from "@/lib/marketplaces.functions";
 import { errorMessage } from "@/lib/format";
 
-export function MarketplaceDialog({ marketplace: m, config, onClose }: { marketplace: Marketplace; config?: MarketplaceConfig; onClose: () => void }) {
+export function MarketplaceDialog({ marketplace: m, config, onClose }: { marketplace: Marketplace; config: MarketplaceConfig | undefined; onClose: () => void }) {
   const qc = useQueryClient();
   const save = useServerFn(saveMarketplaceConfig);
   const remove = useServerFn(deleteMarketplaceConfig);

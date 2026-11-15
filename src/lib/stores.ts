@@ -1,10 +1,15 @@
-export type StoreId = "shopee" | "mercadolivre" | "amazon" | "magalu" | "outra";
+export type StoreId = "shopee" | "mercadolivre" | "amazon" | "magalu" | "aliexpress" | "terabyte" | "awin" | "rakuten" | "samsung-awin" | "outra";
 
 export const STORES: { id: StoreId; label: string; hosts: string[]; program: string }[] = [
   { id: "shopee", label: "Shopee", hosts: ["shopee.com.br", "shope.ee", "s.shopee.com.br"], program: "Programa de Afiliados Shopee" },
   { id: "mercadolivre", label: "Mercado Livre", hosts: ["mercadolivre.com.br", "mercadolibre.com", "mlb.", "meli.la"], program: "Programa de Afiliados Mercado Livre" },
   { id: "amazon", label: "Amazon", hosts: ["amazon.com.br", "amazon.com", "amzn.to", "a.co"], program: "Amazon Associados" },
   { id: "magalu", label: "Magazine Luiza", hosts: ["magazineluiza.com.br", "magalu.com", "magazinevoce.com.br"], program: "Parceiro Magalu" },
+  { id: "aliexpress", label: "AliExpress", hosts: ["aliexpress.com", "aliexpress.com.br"], program: "AliExpress Portals" },
+  { id: "terabyte", label: "Terabyte", hosts: ["terabyteshop.com.br"], program: "Programa Terabyte" },
+  { id: "awin", label: "Awin", hosts: ["awin1.com", "tidd.ly"], program: "Awin" },
+  { id: "rakuten", label: "Rakuten Advertising", hosts: ["click.linksynergy.com"], program: "Rakuten Advertising" },
+  { id: "samsung-awin", label: "Clube Samsung Awin", hosts: [], program: "Clube Samsung Awin" },
   { id: "outra", label: "Outra loja", hosts: [], program: "" },
 ];
 

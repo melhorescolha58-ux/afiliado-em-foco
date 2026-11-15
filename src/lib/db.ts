@@ -36,7 +36,7 @@ export function useSaveRow<T extends TableName>(table: T, invalidate: TableName[
   return useMutation({
     mutationFn: async (row: (Partial<TablesUpdate<T>> & { id?: string }) | Omit<TablesInsert<T>, "user_id">) => {
       const r = row as Record<string, unknown>;
-      if (r.id) {
+      if (r["id"]) {
         const { id, ...rest } = r;
         const { data, error } = await supabase.from(table).update(rest as never).eq("id" as never, id as never).select().single();
         if (error) throw error;
