@@ -16,12 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PageHeader, EmptyState, LoadingRows, ConfirmButton, FieldError } from "@/components/app/ui";
+import { PageHeader, EmptyState, LoadingRows, ConfirmButton, FieldError, StatusBadge } from "@/components/app/ui";
 import { useRows, useSaveRow, useDeleteRows } from "@/lib/db";
 import { useAccount, groupLimit } from "@/hooks/use-account";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { formatDate, errorMessage } from "@/lib/format";
+import { groupSendStatus } from "@/lib/connections";
 
 export const Route = createFileRoute("/_authenticated/painel/grupos")({
   head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }, { name: "description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:title", content: "Meus grupos — Afiliado Automático" }, { property: "og:description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
@@ -224,7 +225,7 @@ function GroupsPage() {
                       <TableCell>{catName(g.category_id) ? <Badge variant="lime">{catName(g.category_id)}</Badge> : <span className="text-muted-foreground">—</span>}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{connections.find((c) => c.id === g.connection_id)?.name ?? "—"}</TableCell>
                       <TableCell>{g.is_active ? <Badge variant="success">Ativo</Badge> : <Badge variant="muted">Inativo</Badge>}</TableCell>
-                      <TableCell>{g.send_available ? <Badge variant="success">Disponível</Badge> : <Badge variant="warning">Aguardando integração</Badge>}</TableCell>
+                      <TableCell><StatusBadge status={groupSendStatus(g, connections.find((c) => c.id === g.connection_id))} /></TableCell>
                       <TableCell className="text-sm text-muted-foreground">{formatDate(g.created_at)}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">

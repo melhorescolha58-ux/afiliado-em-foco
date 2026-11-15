@@ -91,10 +91,13 @@ const STATUS: Record<string, { label: string; variant: "success" | "warning" | "
   paused: { label: "Pausado", variant: "warning" },
   finished: { label: "Concluído", variant: "lime" },
   inactive: { label: "Inativo", variant: "muted" },
-  // connections
-  pending_validation: { label: "Aguardando validação", variant: "warning" },
+  // connections and group availability
+  pending_validation: { label: "Aguardando integração", variant: "warning" },
+  pending_integration: { label: "Aguardando integração", variant: "warning" },
+  pending_connection: { label: "Aguardando conexão", variant: "info" },
   connected: { label: "Conectado", variant: "success" },
-  disconnected: { label: "Desconectado", variant: "muted" },
+  disconnected: { label: "Aguardando conexão", variant: "info" },
+  available: { label: "Disponível", variant: "success" },
   error: { label: "Com erro", variant: "danger" },
   // subscriptions / accounts
   trial: { label: "Teste", variant: "info" },
