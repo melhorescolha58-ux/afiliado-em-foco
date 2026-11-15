@@ -9,7 +9,7 @@
 - [ ] Logotipos de alta resolução e vídeos próprios: dependem de arquivos e links oficiais fornecidos pela administração.
 
 # Conexões e grupos
-- [ ] Permitir adicionar, editar e excluir números de WhatsApp.
-- [ ] Explicitar status conectado, aguardando conexão e aguardando integração sem simular autenticação.
-- [ ] Orientar acesso ao cadastro manual de grupos, categorias, seleção múltipla e limites do plano.
+- [x] Permitir adicionar, editar e excluir números de WhatsApp.
+- [x] Explicitar status conectado, aguardando conexão e aguardando integração sem simular autenticação.
+- [x] Orientar acesso ao cadastro manual de grupos, categorias, seleção múltipla e limites do plano.
 - [ ] Autenticação real e importação automática de grupos: aguardam prova de conceito e tecnologia oficial compatível.
