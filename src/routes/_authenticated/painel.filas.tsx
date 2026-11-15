@@ -21,6 +21,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { computeSchedule } from "@/lib/queue-schedule";
 import { buildPromoMessage } from "@/lib/message-builder";
 import { formatDateTime, errorMessage } from "@/lib/format";
+import { campaignAllowsStore } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/filas")({
   head: () => ({ meta: [{ title: "Filas e agendamentos — Afiliado Automático" }] }),
@@ -49,6 +50,8 @@ function NewQueueDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
   );
 
   async function create() {
+    const campaign = campaigns.find((c) => c.id === campaignId);
+    if (campaign && productIds.some((id) => { const p = products.find((p) => p.id === id); return !p || !campaignAllowsStore(campaign.marketplace_ids, p.store); })) { toast.error("A fila contém produtos de lojas não selecionadas na campanha."); return; }
     if (name.trim().length < 2) { toast.error("Dê um nome à fila."); return; }
     if (!productIds.length) { toast.error("Adicione ao menos um produto."); return; }
     if (!groupIds.length) { toast.error("Selecione os grupos de destino."); return; }
