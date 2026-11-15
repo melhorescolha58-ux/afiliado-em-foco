@@ -12,4 +12,9 @@
 - [x] Permitir adicionar, editar e excluir números de WhatsApp.
 - [x] Explicitar status conectado, aguardando conexão e aguardando integração sem simular autenticação.
 - [x] Orientar acesso ao cadastro manual de grupos, categorias, seleção múltipla e limites do plano.
-- [ ] Autenticação real e importação automática de grupos: aguardam prova de conceito e tecnologia oficial compatível.
+# Integração real Z-API (caminho não oficial aceito pelo usuário)
+- [ ] Salvar ID da instância, token e Client-Token criptografados por conexão e por conta.
+- [ ] Gerar QR Code real e atualizar o status somente com a resposta da Z-API.
+- [ ] Importar grupos reais, sem duplicar cadastros e respeitando o limite do plano.
+- [ ] Enviar uma mensagem real de teste para um grupo selecionado e registrar o retorno.
+- [ ] Validar o fluxo com as credenciais e o número do usuário; nenhum sucesso será presumido antes disso.
