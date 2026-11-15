@@ -16,7 +16,7 @@ import { errorMessage } from "@/lib/format";
 import { campaignAllowsStore } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/disparo")({
-  head: () => ({ meta: [{ title: "Disparo manual — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Disparo manual — Afiliado Automático" }, { name: "description", content: "Disparo manual no painel do Afiliado Automático." }, { property: "og:title", content: "Disparo manual — Afiliado Automático" }, { property: "og:description", content: "Disparo manual no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: DispatchPage,
 });
 

@@ -15,7 +15,7 @@ import { storeLabel } from "@/lib/stores";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/painel/ia")({
-  head: () => ({ meta: [{ title: "Inteligência artificial — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Inteligência artificial — Afiliado Automático" }, { name: "description", content: "Inteligência artificial no painel do Afiliado Automático." }, { property: "og:title", content: "Inteligência artificial — Afiliado Automático" }, { property: "og:description", content: "Inteligência artificial no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AiPage,
 });
 

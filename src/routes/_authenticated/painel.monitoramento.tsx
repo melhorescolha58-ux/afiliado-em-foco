@@ -3,7 +3,7 @@ import { Radar, Search, FileSearch, Link2, Eye, Send } from "lucide-react";
 import { PageHeader, DevNotice, DevBadge } from "@/components/app/ui";
 
 export const Route = createFileRoute("/_authenticated/painel/monitoramento")({
-  head: () => ({ meta: [{ title: "Monitoramento de ofertas — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Monitoramento de ofertas — Afiliado Automático" }, { name: "description", content: "Monitoramento de ofertas no painel do Afiliado Automático." }, { property: "og:title", content: "Monitoramento de ofertas — Afiliado Automático" }, { property: "og:description", content: "Monitoramento de ofertas no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => (
     <>
       <PageHeader title="Monitoramento de ofertas" description="Acompanhe fontes autorizadas e transforme novas ofertas em divulgações suas." badge={<DevBadge />} />

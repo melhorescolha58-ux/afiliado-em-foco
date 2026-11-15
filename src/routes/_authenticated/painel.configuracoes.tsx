@@ -12,7 +12,7 @@ import { useAccount } from "@/hooks/use-account";
 import { errorMessage } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/configuracoes")({
-  head: () => ({ meta: [{ title: "Configurações — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Configurações — Afiliado Automático" }, { name: "description", content: "Configurações no painel do Afiliado Automático." }, { property: "og:title", content: "Configurações — Afiliado Automático" }, { property: "og:description", content: "Configurações no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: SettingsPage,
 });
 

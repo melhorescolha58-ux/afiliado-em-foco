@@ -24,7 +24,7 @@ import { formatDateTime, errorMessage } from "@/lib/format";
 import { campaignAllowsStore } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/filas")({
-  head: () => ({ meta: [{ title: "Filas e agendamentos — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Filas e agendamentos — Afiliado Automático" }, { name: "description", content: "Filas e agendamentos no painel do Afiliado Automático." }, { property: "og:title", content: "Filas e agendamentos — Afiliado Automático" }, { property: "og:description", content: "Filas e agendamentos no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: QueuesPage,
 });
 

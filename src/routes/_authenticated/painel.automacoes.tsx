@@ -15,7 +15,7 @@ import { TRIGGERS, CONDITIONS, ACTIONS, label } from "@/lib/automation";
 import type { Tables } from "@/integrations/supabase/types";
 
 export const Route = createFileRoute("/_authenticated/painel/automacoes")({
-  head: () => ({ meta: [{ title: "Automações — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Automações — Afiliado Automático" }, { name: "description", content: "Automações no painel do Afiliado Automático." }, { property: "og:title", content: "Automações — Afiliado Automático" }, { property: "og:description", content: "Automações no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: RulesPage,
 });
 

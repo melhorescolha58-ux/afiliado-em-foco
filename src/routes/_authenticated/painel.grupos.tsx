@@ -24,7 +24,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { formatDate, errorMessage } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/grupos")({
-  head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }, { name: "description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:title", content: "Meus grupos — Afiliado Automático" }, { property: "og:description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: GroupsPage,
 });
 

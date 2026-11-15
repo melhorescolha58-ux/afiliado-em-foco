@@ -16,7 +16,7 @@ import { useMarketplaces } from "@/hooks/use-marketplaces";
 import { usableMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/campanhas")({
-  head: () => ({ meta: [{ title: "Campanhas — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Campanhas — Afiliado Automático" }, { name: "description", content: "Campanhas no painel do Afiliado Automático." }, { property: "og:title", content: "Campanhas — Afiliado Automático" }, { property: "og:description", content: "Campanhas no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: CampaignsPage,
 });
 

@@ -18,7 +18,7 @@ import { STORES } from "@/lib/stores";
 
 export const Route = createFileRoute("/_authenticated/painel/mensagens")({
   validateSearch: (s: Record<string, unknown>): { produto?: string } => typeof s["produto"] === "string" ? { produto: s["produto"] } : {},
-  head: () => ({ meta: [{ title: "Criador de mensagens — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Criador de mensagens — Afiliado Automático" }, { name: "description", content: "Criador de mensagens no painel do Afiliado Automático." }, { property: "og:title", content: "Criador de mensagens — Afiliado Automático" }, { property: "og:description", content: "Criador de mensagens no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: MessagesPage,
 });
 

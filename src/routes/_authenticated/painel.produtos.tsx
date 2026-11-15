@@ -22,7 +22,7 @@ import { useMarketplaces } from "@/hooks/use-marketplaces";
 import { detectMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/produtos")({
-  head: () => ({ meta: [{ title: "Produtos e ofertas — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Produtos e ofertas — Afiliado Automático" }, { name: "description", content: "Produtos e ofertas no painel do Afiliado Automático." }, { property: "og:title", content: "Produtos e ofertas — Afiliado Automático" }, { property: "og:description", content: "Produtos e ofertas no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ProductsPage,
 });
 

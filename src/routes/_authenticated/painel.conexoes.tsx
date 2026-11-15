@@ -13,7 +13,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/conexoes")({
-  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }, { name: "description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:title", content: "Conexões — Afiliado Automático" }, { property: "og:description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ConnectionsPage,
 });
 

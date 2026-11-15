@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/app/ui";
 
 export const Route = createFileRoute("/_authenticated/painel/suporte")({
-  head: () => ({ meta: [{ title: "Suporte e tutoriais — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Suporte e tutoriais — Afiliado Automático" }, { name: "description", content: "Suporte e tutoriais no painel do Afiliado Automático." }, { property: "og:title", content: "Suporte e tutoriais — Afiliado Automático" }, { property: "og:description", content: "Suporte e tutoriais no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => (
     <>
       <PageHeader title="Suporte e tutoriais" description="Guias rápidos para tirar o máximo da plataforma." actions={<Button asChild variant="hero"><Link to="/contato">Falar com o suporte</Link></Button>} />

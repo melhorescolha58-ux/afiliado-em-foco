@@ -7,7 +7,7 @@ import { PageHeader, StatCard, EmptyState } from "@/components/app/ui";
 import { useRows } from "@/lib/db";
 
 export const Route = createFileRoute("/_authenticated/painel/relatorios")({
-  head: () => ({ meta: [{ title: "Relatórios — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Relatórios — Afiliado Automático" }, { name: "description", content: "Relatórios no painel do Afiliado Automático." }, { property: "og:title", content: "Relatórios — Afiliado Automático" }, { property: "og:description", content: "Relatórios no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ReportsPage,
 });
 

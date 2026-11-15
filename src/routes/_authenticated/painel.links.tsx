@@ -17,7 +17,7 @@ import { useMarketplaces } from "@/hooks/use-marketplaces";
 import { detectMarketplace, usableMarketplace } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/links")({
-  head: () => ({ meta: [{ title: "Gerador de links — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Gerador de links — Afiliado Automático" }, { name: "description", content: "Gerador de links no painel do Afiliado Automático." }, { property: "og:title", content: "Gerador de links — Afiliado Automático" }, { property: "og:description", content: "Gerador de links no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: LinksPage,
 });
 

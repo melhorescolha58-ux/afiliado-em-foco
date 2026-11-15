@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/plano")({
-  head: () => ({ meta: [{ title: "Meu plano — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Meu plano — Afiliado Automático" }, { name: "description", content: "Meu plano no painel do Afiliado Automático." }, { property: "og:title", content: "Meu plano — Afiliado Automático" }, { property: "og:description", content: "Meu plano no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: PlanPage,
 });
 

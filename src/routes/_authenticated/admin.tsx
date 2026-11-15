@@ -11,7 +11,7 @@ import { formatDate, errorMessage } from "@/lib/format";
 import { MarketplaceAdmin } from "@/components/app/MarketplaceAdmin";
 
 export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({ meta: [{ title: "Administração — Afiliado Automático" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Administração — Afiliado Automático" }, { name: "description", content: "Administração no painel do Afiliado Automático." }, { property: "og:title", content: "Administração — Afiliado Automático" }, { property: "og:description", content: "Administração no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: async ({ context }) => {
     const userId = (context as { user?: { id: string } }).user?.id;
     if (!userId) throw redirect({ to: "/painel" });

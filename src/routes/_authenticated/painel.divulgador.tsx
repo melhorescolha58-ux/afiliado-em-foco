@@ -18,7 +18,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { WEEKDAYS } from "@/lib/queue-schedule";
 
 export const Route = createFileRoute("/_authenticated/painel/divulgador")({
-  head: () => ({ meta: [{ title: "Divulgador automático — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Divulgador automático — Afiliado Automático" }, { name: "description", content: "Divulgador automático no painel do Afiliado Automático." }, { property: "og:title", content: "Divulgador automático — Afiliado Automático" }, { property: "og:description", content: "Divulgador automático no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: PublisherPage,
 });
 
