@@ -34,6 +34,7 @@ import { Route as AuthenticatedPainelGruposRouteImport } from './routes/_authent
 import { Route as AuthenticatedPainelHistoricoRouteImport } from './routes/_authenticated/painel.historico'
 import { Route as AuthenticatedPainelIaRouteImport } from './routes/_authenticated/painel.ia'
 import { Route as AuthenticatedPainelLinksRouteImport } from './routes/_authenticated/painel.links'
+import { Route as AuthenticatedPainelLojasRouteImport } from './routes/_authenticated/painel.lojas'
 import { Route as AuthenticatedPainelMensagensRouteImport } from './routes/_authenticated/painel.mensagens'
 import { Route as AuthenticatedPainelMonitoramentoRouteImport } from './routes/_authenticated/painel.monitoramento'
 import { Route as AuthenticatedPainelPlanoRouteImport } from './routes/_authenticated/painel.plano'
@@ -176,6 +177,12 @@ const AuthenticatedPainelLinksRoute =
     path: '/links',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelLojasRoute =
+  AuthenticatedPainelLojasRouteImport.update({
+    id: '/lojas',
+    path: '/lojas',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelMensagensRoute =
   AuthenticatedPainelMensagensRouteImport.update({
     id: '/mensagens',
@@ -237,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
   '/painel/ia': typeof AuthenticatedPainelIaRoute
   '/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/painel/lojas': typeof AuthenticatedPainelLojasRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/painel/plano': typeof AuthenticatedPainelPlanoRoute
@@ -268,6 +276,7 @@ export interface FileRoutesByTo {
   '/painel/historico': typeof AuthenticatedPainelHistoricoRoute
   '/painel/ia': typeof AuthenticatedPainelIaRoute
   '/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/painel/lojas': typeof AuthenticatedPainelLojasRoute
   '/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/painel/plano': typeof AuthenticatedPainelPlanoRoute
@@ -302,6 +311,7 @@ export interface FileRoutesById {
   '/_authenticated/painel/historico': typeof AuthenticatedPainelHistoricoRoute
   '/_authenticated/painel/ia': typeof AuthenticatedPainelIaRoute
   '/_authenticated/painel/links': typeof AuthenticatedPainelLinksRoute
+  '/_authenticated/painel/lojas': typeof AuthenticatedPainelLojasRoute
   '/_authenticated/painel/mensagens': typeof AuthenticatedPainelMensagensRoute
   '/_authenticated/painel/monitoramento': typeof AuthenticatedPainelMonitoramentoRoute
   '/_authenticated/painel/plano': typeof AuthenticatedPainelPlanoRoute
@@ -336,6 +346,7 @@ export interface FileRouteTypes {
     | '/painel/historico'
     | '/painel/ia'
     | '/painel/links'
+    | '/painel/lojas'
     | '/painel/mensagens'
     | '/painel/monitoramento'
     | '/painel/plano'
@@ -367,6 +378,7 @@ export interface FileRouteTypes {
     | '/painel/historico'
     | '/painel/ia'
     | '/painel/links'
+    | '/painel/lojas'
     | '/painel/mensagens'
     | '/painel/monitoramento'
     | '/painel/plano'
@@ -400,6 +412,7 @@ export interface FileRouteTypes {
     | '/_authenticated/painel/historico'
     | '/_authenticated/painel/ia'
     | '/_authenticated/painel/links'
+    | '/_authenticated/painel/lojas'
     | '/_authenticated/painel/mensagens'
     | '/_authenticated/painel/monitoramento'
     | '/_authenticated/painel/plano'
@@ -600,6 +613,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelLinksRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/lojas': {
+      id: '/_authenticated/painel/lojas'
+      path: '/lojas'
+      fullPath: '/painel/lojas'
+      preLoaderRoute: typeof AuthenticatedPainelLojasRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/mensagens': {
       id: '/_authenticated/painel/mensagens'
       path: '/mensagens'
@@ -657,6 +677,7 @@ interface AuthenticatedPainelRouteChildren {
   AuthenticatedPainelHistoricoRoute: typeof AuthenticatedPainelHistoricoRoute
   AuthenticatedPainelIaRoute: typeof AuthenticatedPainelIaRoute
   AuthenticatedPainelLinksRoute: typeof AuthenticatedPainelLinksRoute
+  AuthenticatedPainelLojasRoute: typeof AuthenticatedPainelLojasRoute
   AuthenticatedPainelMensagensRoute: typeof AuthenticatedPainelMensagensRoute
   AuthenticatedPainelMonitoramentoRoute: typeof AuthenticatedPainelMonitoramentoRoute
   AuthenticatedPainelPlanoRoute: typeof AuthenticatedPainelPlanoRoute
@@ -678,6 +699,7 @@ const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
   AuthenticatedPainelHistoricoRoute: AuthenticatedPainelHistoricoRoute,
   AuthenticatedPainelIaRoute: AuthenticatedPainelIaRoute,
   AuthenticatedPainelLinksRoute: AuthenticatedPainelLinksRoute,
+  AuthenticatedPainelLojasRoute: AuthenticatedPainelLojasRoute,
   AuthenticatedPainelMensagensRoute: AuthenticatedPainelMensagensRoute,
   AuthenticatedPainelMonitoramentoRoute: AuthenticatedPainelMonitoramentoRoute,
   AuthenticatedPainelPlanoRoute: AuthenticatedPainelPlanoRoute,
