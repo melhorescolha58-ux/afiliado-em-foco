@@ -7,3 +7,9 @@
 - [x] Relatório técnico com capacidades e dependências reais.
 - [ ] Conversão e validação externas: dependem de aprovação dos programas e prova de conceito oficial.
 - [ ] Logotipos de alta resolução e vídeos próprios: dependem de arquivos e links oficiais fornecidos pela administração.
+
+# Conexões e grupos
+- [x] Permitir adicionar, editar e excluir números de WhatsApp.
+- [x] Explicitar status conectado, aguardando conexão e aguardando integração sem simular autenticação.
+- [x] Orientar acesso ao cadastro manual de grupos, categorias, seleção múltipla e limites do plano.
+- [ ] Autenticação real e importação automática de grupos: aguardam prova de conceito e tecnologia oficial compatível.

@@ -16,12 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PageHeader, EmptyState, LoadingRows, ConfirmButton, FieldError } from "@/components/app/ui";
+import { PageHeader, EmptyState, LoadingRows, ConfirmButton, FieldError, StatusBadge } from "@/components/app/ui";
 import { useRows, useSaveRow, useDeleteRows } from "@/lib/db";
 import { useAccount, groupLimit } from "@/hooks/use-account";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { formatDate, errorMessage } from "@/lib/format";
+import { groupSendStatus } from "@/lib/connections";
 
 export const Route = createFileRoute("/_authenticated/painel/grupos")({
   head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }, { name: "description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:title", content: "Meus grupos — Afiliado Automático" }, { property: "og:description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
@@ -65,12 +66,12 @@ function GroupDialog({ open, onOpenChange, group, categories, connections }: {
       <DialogContent>
         <DialogHeader><DialogTitle>{group ? "Editar grupo" : "Novo grupo"}</DialogTitle></DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-          <div className="space-y-1.5"><Label>Nome do grupo</Label><Input {...register("name")} placeholder="Ofertas Eletrônicos #1" /><FieldError msg={errors.name?.message} /></div>
+          <div className="space-y-1.5"><Label htmlFor="group-name">Nome do grupo</Label><Input id="group-name" {...register("name")} placeholder="Ofertas Eletrônicos #1" /><FieldError msg={errors.name?.message} /></div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label>Categoria</Label>
+              <Label htmlFor="group-category">Categoria</Label>
               <Select value={watch("category_id") ?? "none"} onValueChange={(v) => setValue("category_id", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger id="group-category"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Sem categoria</SelectItem>
                   {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
@@ -78,9 +79,9 @@ function GroupDialog({ open, onOpenChange, group, categories, connections }: {
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label>Conexão</Label>
+              <Label htmlFor="group-connection">Conexão</Label>
               <Select value={watch("connection_id") ?? "none"} onValueChange={(v) => setValue("connection_id", v)}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectTrigger id="group-connection"><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Nenhuma</SelectItem>
                   {connections.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
@@ -88,8 +89,8 @@ function GroupDialog({ open, onOpenChange, group, categories, connections }: {
               </Select>
             </div>
           </div>
-          <div className="space-y-1.5"><Label>Identificador do grupo (opcional)</Label><Input {...register("external_id")} placeholder="Preenchido automaticamente quando houver integração" /></div>
-          <div className="space-y-1.5"><Label>Descrição</Label><Textarea rows={3} {...register("description")} /></div>
+          <div className="space-y-1.5"><Label htmlFor="group-external-id">Identificador do grupo (opcional)</Label><Input id="group-external-id" {...register("external_id")} placeholder="Preenchido automaticamente quando houver integração" /></div>
+          <div className="space-y-1.5"><Label htmlFor="group-description">Descrição</Label><Textarea id="group-description" rows={3} {...register("description")} /></div>
           <label className="flex items-center gap-3 text-sm"><Switch checked={watch("is_active")} onCheckedChange={(c) => setValue("is_active", c)} /> Grupo ativo para divulgação</label>
           <DialogFooter><Button type="submit" variant="hero" disabled={save.isPending}>{save.isPending ? "Salvando..." : "Salvar"}</Button></DialogFooter>
         </form>
@@ -224,7 +225,7 @@ function GroupsPage() {
                       <TableCell>{catName(g.category_id) ? <Badge variant="lime">{catName(g.category_id)}</Badge> : <span className="text-muted-foreground">—</span>}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">{connections.find((c) => c.id === g.connection_id)?.name ?? "—"}</TableCell>
                       <TableCell>{g.is_active ? <Badge variant="success">Ativo</Badge> : <Badge variant="muted">Inativo</Badge>}</TableCell>
-                      <TableCell>{g.send_available ? <Badge variant="success">Disponível</Badge> : <Badge variant="warning">Aguardando integração</Badge>}</TableCell>
+                      <TableCell><StatusBadge status={groupSendStatus(g, connections.find((c) => c.id === g.connection_id))} /></TableCell>
                       <TableCell className="text-sm text-muted-foreground">{formatDate(g.created_at)}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">

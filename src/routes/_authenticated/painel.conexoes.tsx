@@ -1,19 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plug, Plus, RefreshCw, Trash2, Info, ShieldCheck } from "lucide-react";
+import { Plug, Plus, Pencil, Trash2, Info, ShieldCheck, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { PageHeader, EmptyState, ConfirmButton, StatusBadge, DevNotice, DevBadge } from "@/components/app/ui";
+import { PageHeader, EmptyState, ConfirmButton, StatusBadge, DevNotice } from "@/components/app/ui";
 import { useRows, useSaveRow, useDeleteRows } from "@/lib/db";
 import { useAccount } from "@/hooks/use-account";
 import type { Tables } from "@/integrations/supabase/types";
 import { formatDateTime } from "@/lib/format";
+import { normalizeWhatsAppPhone } from "@/lib/connections";
 
 export const Route = createFileRoute("/_authenticated/painel/conexoes")({
-  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }, { name: "description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:title", content: "Conexões — Afiliado Automático" }, { property: "og:description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }, { name: "description", content: "Cadastre seus números de WhatsApp e acompanhe a preparação para a integração no Afiliado Automático." }, { property: "og:title", content: "Conexões — Afiliado Automático" }, { property: "og:description", content: "Cadastre seus números de WhatsApp e acompanhe a preparação para a integração no Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ConnectionsPage,
 });
 
@@ -21,7 +23,8 @@ function ConnectionsPage() {
   const { data: account } = useAccount();
   const { data: connections = [] } = useRows("connections");
   const { data: groups = [] } = useRows("groups", { select: "id, connection_id" });
-  const save = useSaveRow("connections", [], "Conexão registrada");
+  const [editing, setEditing] = useState<Tables<"connections"> | null>(null);
+  const save = useSaveRow("connections", [], editing ? "Número atualizado" : "Número cadastrado");
   const del = useDeleteRows("connections", ["groups"]);
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState<Tables<"connections"> | null>(null);
@@ -29,79 +32,158 @@ function ConnectionsPage() {
   const [phone, setPhone] = useState("");
   const max = account?.subscription?.plan?.max_connections ?? 1;
 
-  async function add() {
-    if (name.trim().length < 2) { toast.error("Dê um nome à conexão."); return; }
-    const digits = phone.replace(/\D/g, "");
-    if (digits && (digits.length < 10 || digits.length > 15)) { toast.error("Número inválido. Use DDI + DDD + número."); return; }
-    await save.mutateAsync({ name: name.trim(), phone_number: digits ? `+${digits}` : null, status: "pending_validation", provider: "whatsapp_business_api" });
-    setOpen(false); setName(""); setPhone("");
+  function openNew() {
+    setEditing(null);
+    setName("");
+    setPhone("");
+    setOpen(true);
+  }
+
+  function openEdit(connection: Tables<"connections">) {
+    setEditing(connection);
+    setName(connection.name);
+    setPhone(connection.phone_number ?? "");
+    setOpen(true);
+  }
+
+  async function saveConnection() {
+    if (name.trim().length < 2) {
+      toast.error("Dê um nome ao número.");
+      return;
+    }
+    const normalizedPhone = normalizeWhatsAppPhone(phone);
+    if (!normalizedPhone) {
+      toast.error("Informe o número com DDI + DDD + número.");
+      return;
+    }
+    try {
+      await save.mutateAsync({
+        ...(editing ? { id: editing.id } : {}),
+        name: name.trim(),
+        phone_number: normalizedPhone,
+        provider: "whatsapp_business_api",
+        ...(editing ? {} : { status: "pending_validation" as const }),
+      });
+      setOpen(false);
+      setEditing(null);
+      setName("");
+      setPhone("");
+    } catch {
+      // O hook já apresenta o erro e o formulário permanece preenchido.
+    }
   }
 
   return (
     <>
-      <PageHeader title="Conexões" description="Gerencie as contas de WhatsApp usadas para divulgar suas ofertas." badge={<DevBadge />} actions={<Button variant="hero" disabled={connections.length >= max} onClick={() => setOpen(true)}><Plus /> Adicionar conexão</Button>} />
+      <PageHeader
+        title="Conexões"
+        description="Cadastre seus números de WhatsApp e acompanhe o que já está pronto para a futura integração."
+        badge={<Badge variant="success">Cadastro disponível</Badge>}
+        actions={
+          <>
+            <Button variant="outline" asChild><Link to="/painel/grupos"><Users /> Gerenciar grupos</Link></Button>
+            <Button variant="hero" disabled={connections.length >= max} onClick={openNew}><Plus /> Adicionar número</Button>
+          </>
+        }
+      />
+
       <DevNotice>
-        A conexão real com o WhatsApp está em <b>prova de conceito</b>. Você já pode registrar seus números; eles ficam como <b>“Aguardando validação”</b> até a integração oficial ser liberada. Nenhuma conexão é simulada como ativa.
+        O cadastro de números funciona agora. Somente a <b>autenticação real</b> e a <b>importação automática de grupos</b> aguardam a validação de uma tecnologia oficial compatível. Nenhuma conexão é simulada.
       </DevNotice>
+
+      <div className="mb-6 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm">
+        <span className="mr-1 text-muted-foreground">Status:</span>
+        <StatusBadge status="connected" />
+        <StatusBadge status="disconnected" />
+        <StatusBadge status="pending_validation" />
+        <span className="ml-auto text-xs text-muted-foreground">“Conectado” só aparece após autenticação real.</span>
+      </div>
+
       {!connections.length ? (
-        <EmptyState icon={Plug} title="Nenhuma conexão registrada" text={`Registre o número de WhatsApp que você usa nos grupos. Seu plano permite ${max} conexão(ões).`} action={<Button variant="hero" onClick={() => setOpen(true)}><Plus /> Adicionar conexão</Button>} />
+        <EmptyState
+          icon={Plug}
+          title="Nenhum número cadastrado"
+          text={`Cadastre o WhatsApp que você pretende usar. Seu plano permite ${max} conexão(ões); a autenticação continua aguardando integração.`}
+          action={<Button variant="hero" onClick={openNew}><Plus /> Adicionar número</Button>}
+        />
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {connections.map((c) => (
-            <div key={c.id} className="surface-card p-5">
+          {connections.map((connection) => (
+            <div key={connection.id} className="surface-card p-5">
               <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-lg bg-accent"><Plug className="size-5 text-lime" /></span>
-                  <div><p className="font-bold">{c.name}</p><p className="text-sm text-muted-foreground">{c.phone_number ?? "Sem número"}</p></div>
+                <div className="flex min-w-0 items-center gap-3">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-accent"><Plug className="size-5 text-lime" /></span>
+                  <div className="min-w-0"><p className="truncate font-bold">{connection.name}</p><p className="text-sm text-muted-foreground">{connection.phone_number ?? "Sem número"}</p></div>
                 </div>
-                <StatusBadge status={c.status} />
+                <StatusBadge status={connection.status} />
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">{groups.filter((g) => g.connection_id === c.id).length} grupo(s) vinculados</p>
-              {c.last_error && <p className="mt-2 text-xs text-destructive">{c.last_error}</p>}
-              <div className="mt-4 flex gap-1 border-t border-border pt-3">
-                <Button size="sm" variant="ghost" onClick={() => setInfo(c)}><Info /> Detalhes</Button>
-                <Button size="sm" variant="ghost" onClick={() => toast.info("A reconexão ficará disponível quando a integração oficial for validada.")}><RefreshCw /> Reconectar</Button>
-                <ConfirmButton trigger={<Button size="sm" variant="ghost"><Trash2 /> Remover</Button>} title="Remover conexão?" description="Os grupos vinculados ficarão sem conexão." confirmLabel="Remover" onConfirm={() => del.mutate([c.id])} />
+              <p className="mt-4 text-sm text-muted-foreground">{groups.filter((group) => group.connection_id === connection.id).length} grupo(s) vinculados</p>
+              <p className="mt-2 text-xs text-muted-foreground">Autenticação e importação automática ainda não executadas.</p>
+              {connection.last_error && <p className="mt-2 text-xs text-destructive">{connection.last_error}</p>}
+              <div className="mt-4 flex flex-wrap gap-1 border-t border-border pt-3">
+                <Button size="sm" variant="ghost" onClick={() => setInfo(connection)}><Info /> Detalhes</Button>
+                <Button size="sm" variant="ghost" onClick={() => openEdit(connection)}><Pencil /> Editar</Button>
+                <ConfirmButton
+                  trigger={<Button size="sm" variant="ghost"><Trash2 /> Excluir</Button>}
+                  title="Excluir número?"
+                  description="O cadastro será removido e os grupos vinculados ficarão sem número associado."
+                  confirmLabel="Excluir"
+                  onConfirm={() => del.mutate([connection.id])}
+                />
               </div>
             </div>
           ))}
         </div>
       )}
 
-      <div className="mt-8 surface-card p-6">
-        <div className="flex items-center gap-2"><ShieldCheck className="size-5 text-primary" /><h2 className="font-bold">Como será a integração</h2></div>
-        <ul className="mt-3 grid gap-2 text-sm text-muted-foreground md:grid-cols-2">
-          <li>• Conexão por uma solução oficial e tecnicamente validada.</li>
-          <li>• Credenciais guardadas apenas no servidor, nunca no navegador.</li>
-          <li>• Limites de envio respeitando as políticas do provedor.</li>
-          <li>• Teste real obrigatório antes de liberar envios para grupos.</li>
-        </ul>
+      <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="surface-card p-6">
+          <div className="flex items-center gap-2"><Users className="size-5 text-primary" /><h2 className="font-bold">Grupos e organização</h2></div>
+          <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
+            <li>• Cadastro, edição e exclusão manual de grupos.</li>
+            <li>• Categorias por tipo, marketplace ou finalidade.</li>
+            <li>• Seleção múltipla, busca, filtros e ações em lote.</li>
+            <li>• Limite de grupos controlado pela assinatura.</li>
+          </ul>
+          <Button className="mt-4" variant="outline" asChild><Link to="/painel/grupos">Abrir Meus grupos</Link></Button>
+        </div>
+        <div className="surface-card p-6">
+          <div className="flex items-center gap-2"><ShieldCheck className="size-5 text-primary" /><h2 className="font-bold">Preparação para integração</h2></div>
+          <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
+            <li>• Números já podem ser associados aos grupos cadastrados.</li>
+            <li>• Cada grupo possui campo para o identificador externo futuro.</li>
+            <li>• A integração deverá atualizar os status somente após validação real.</li>
+            <li>• Autenticação e importação automática: aguardando integração.</li>
+          </ul>
+        </div>
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Adicionar conexão</DialogTitle>
-            <DialogDescription>A conexão ficará aguardando validação até a integração oficial ser liberada.</DialogDescription>
+            <DialogTitle>{editing ? "Editar número" : "Adicionar número"}</DialogTitle>
+            <DialogDescription>O cadastro não autentica o WhatsApp. O número ficará aguardando integração.</DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-1.5"><Label>Nome da conexão</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="WhatsApp principal" maxLength={80} /></div>
-            <div className="space-y-1.5"><Label>Número (com DDI e DDD)</Label><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+55 11 99999-9999" inputMode="tel" /></div>
-          </div>
-          <DialogFooter><Button variant="hero" onClick={add} disabled={save.isPending}>Registrar</Button></DialogFooter>
+          <form onSubmit={(event) => { event.preventDefault(); void saveConnection(); }} className="space-y-4">
+            <div className="space-y-1.5"><Label htmlFor="connection-name">Nome de identificação</Label><Input id="connection-name" value={name} onChange={(event) => setName(event.target.value)} placeholder="WhatsApp principal" maxLength={80} /></div>
+            <div className="space-y-1.5"><Label htmlFor="connection-phone">Número com DDI e DDD</Label><Input id="connection-phone" value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+55 11 99999-9999" inputMode="tel" required /></div>
+            <DialogFooter><Button type="submit" variant="hero" disabled={save.isPending}>{save.isPending ? "Salvando..." : editing ? "Salvar alterações" : "Cadastrar número"}</Button></DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
 
-      <Dialog open={!!info} onOpenChange={(o) => !o && setInfo(null)}>
+      <Dialog open={!!info} onOpenChange={(isOpen) => !isOpen && setInfo(null)}>
         <DialogContent>
           <DialogHeader><DialogTitle>{info?.name}</DialogTitle></DialogHeader>
           {info && (
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
               <dt className="text-muted-foreground">Status</dt><dd><StatusBadge status={info.status} /></dd>
               <dt className="text-muted-foreground">Número</dt><dd>{info.phone_number ?? "—"}</dd>
-              <dt className="text-muted-foreground">Provedor</dt><dd>WhatsApp Business (oficial) — em validação</dd>
+              <dt className="text-muted-foreground">Integração prevista</dt><dd>WhatsApp Business — aguardando validação técnica</dd>
+              <dt className="text-muted-foreground">Autenticação</dt><dd>Não realizada</dd>
+              <dt className="text-muted-foreground">Importação de grupos</dt><dd>Aguardando integração</dd>
               <dt className="text-muted-foreground">Última verificação</dt><dd>{formatDateTime(info.last_checked_at)}</dd>
-              <dt className="text-muted-foreground">Registrada em</dt><dd>{formatDateTime(info.created_at)}</dd>
+              <dt className="text-muted-foreground">Cadastrado em</dt><dd>{formatDateTime(info.created_at)}</dd>
             </dl>
           )}
         </DialogContent>
