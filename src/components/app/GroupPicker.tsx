@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRows } from "@/lib/db";
 
-export function GroupPicker({ value, onChange }: { value: string[]; onChange: (ids: string[]) => void }) {
+export function GroupPicker({ value, onChange, allowedGroupIds }: { value: string[]; onChange: (ids: string[]) => void; allowedGroupIds?: Set<string> }) {
   const { data: groups = [] } = useRows("groups", { order: "name", ascending: true });
   const { data: categories = [] } = useRows("group_categories", { order: "name", ascending: true });
   const [q, setQ] = useState("");
-  const active = groups.filter((g) => g.is_active);
+  const active = groups.filter((g) => g.is_active && (!allowedGroupIds || allowedGroupIds.has(g.id)));
   const list = useMemo(() => active.filter((g) => g.name.toLowerCase().includes(q.toLowerCase())), [active, q]);
   const sel = new Set(value);
 
