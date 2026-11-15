@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Marketplace catalogues and per-partner form definitions live in the database so administrators can extend them without redeploying.
+- Marketplace configuration writes go through authenticated server functions and a service-only atomic RPC; browser clients only read their own non-secret settings to prevent forged validation and credential exposure.
+- Marketplace credentials use versioned AES-GCM with a managed key and owner/partner-bound associated data; never return plaintext or ciphertext to the browser.
+- Configuration activation enables use of saved identifiers, not external validation; no conversion adapter is advertised before a real approved integration succeeds.
