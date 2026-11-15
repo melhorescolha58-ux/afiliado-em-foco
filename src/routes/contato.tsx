@@ -42,7 +42,7 @@ function Page() {
 
   async function onSubmit(values: Form) {
     const { error } = await supabase.from("contact_messages").insert(values);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     reset();
     setSent(true);
   }

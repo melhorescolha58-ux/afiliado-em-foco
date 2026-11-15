@@ -11,7 +11,7 @@ export interface ScheduleConfig {
 }
 
 function minutesOf(hhmm: string): number {
-  const [h, m] = hhmm.split(":").map(Number);
+  const [h = 0, m = 0] = hhmm.split(":").map(Number);
   return h * 60 + (m || 0);
 }
 

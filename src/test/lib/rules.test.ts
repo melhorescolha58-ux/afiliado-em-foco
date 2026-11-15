@@ -35,8 +35,8 @@ describe("queue schedule", () => {
   it("rolls over to the next allowed day after the window ends", () => {
     const start = new Date(2026, 10, 20, 21, 50); // sexta
     const out = computeSchedule({ start, count: 2, intervalMinutes: 15, windowStart: "08:00", windowEnd: "22:00", daysOfWeek: [1, 2, 3, 4, 5] });
-    expect(out[1].getDay()).toBe(1);
-    expect(out[1].getHours()).toBe(8);
+    expect(out[1]?.getDay()).toBe(1);
+    expect(out[1]?.getHours()).toBe(8);
   });
 });
 

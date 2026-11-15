@@ -47,8 +47,8 @@ function AiPage() {
     ].filter(Boolean).join("\n"));
   }
   function run() {
-    if (input.trim().length < 3) return toast.error("Escreva ou carregue um conteúdo primeiro.");
-    ai.mutate({ task, text: input, tone: task === "tone" ? tone : undefined }, { onSuccess: setOutput });
+    if (input.trim().length < 3) { toast.error("Escreva ou carregue um conteúdo primeiro."); return; }
+    ai.mutate({ task, text: input, ...(task === "tone" ? { tone } : {}) }, { onSuccess: setOutput });
   }
 
   return (

@@ -33,14 +33,14 @@ function SettingsPage() {
       full_name: p.full_name.trim().slice(0, 120), timezone: p.timezone, notify_email: p.notify_email, notify_failures: p.notify_failures,
       automation_settings: { ...((account.profile?.automation_settings as object) ?? {}), require_review_for_ai: p.review_ai },
     }).eq("id", account.userId);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     toast.success("Configurações salvas");
     qc.invalidateQueries({ queryKey: ["account"] });
   }
   async function changePassword() {
-    if (pw.next.length < 8) return toast.error("A nova senha precisa ter pelo menos 8 caracteres.");
+    if (pw.next.length < 8) { toast.error("A nova senha precisa ter pelo menos 8 caracteres."); return; }
     const { error } = await supabase.auth.updateUser({ password: pw.next, current_password: pw.current } as never);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     toast.success("Senha alterada");
     setPw({ current: "", next: "" });
   }

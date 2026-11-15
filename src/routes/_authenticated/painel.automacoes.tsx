@@ -29,9 +29,9 @@ function RuleDialog({ draft, onClose }: { draft: Draft; onClose: () => void }) {
   const { data: queues = [] } = useRows("queues");
   const cond = CONDITIONS.find((c) => c.id === d.condition_type);
   async function submit() {
-    if (d.name.trim().length < 2) return toast.error("Dê um nome à regra.");
-    if (cond?.needsValue && !d.condition_value.trim()) return toast.error("Informe o valor da condição.");
-    if (d.action_type === "route_to_category" && !d.action_config.category_id) return toast.error("Escolha a categoria de destino.");
+    if (d.name.trim().length < 2) { toast.error("Dê um nome à regra."); return; }
+    if (cond?.needsValue && !d.condition_value.trim()) { toast.error("Informe o valor da condição."); return; }
+    if (d.action_type === "route_to_category" && !d.action_config.category_id) { toast.error("Escolha a categoria de destino."); return; }
     await save.mutateAsync({ ...d, name: d.name.trim(), condition_value: cond?.needsValue ? d.condition_value.trim() : null });
     onClose();
   }

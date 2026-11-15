@@ -49,11 +49,11 @@ function NewQueueDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
   );
 
   async function create() {
-    if (name.trim().length < 2) return toast.error("Dê um nome à fila.");
-    if (!productIds.length) return toast.error("Adicione ao menos um produto.");
-    if (!groupIds.length) return toast.error("Selecione os grupos de destino.");
-    if (interval < 1 || interval > 1440) return toast.error("Intervalo deve ficar entre 1 e 1440 minutos.");
-    if (preview.length !== productIds.length) return toast.error("Revise a janela de horário e os dias da semana.");
+    if (name.trim().length < 2) { toast.error("Dê um nome à fila."); return; }
+    if (!productIds.length) { toast.error("Adicione ao menos um produto."); return; }
+    if (!groupIds.length) { toast.error("Selecione os grupos de destino."); return; }
+    if (interval < 1 || interval > 1440) { toast.error("Intervalo deve ficar entre 1 e 1440 minutos."); return; }
+    if (preview.length !== productIds.length) { toast.error("Revise a janela de horário e os dias da semana."); return; }
     setSaving(true);
     try {
       const user_id = await currentUserId();
@@ -65,9 +65,11 @@ function NewQueueDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (
       const { error: e1 } = await supabase.from("queue_groups").insert(groupIds.map((group_id) => ({ user_id, queue_id: queue.id, group_id })));
       if (e1) throw e1;
       const items = productIds.map((pid, i) => {
-        const p = products.find((x) => x.id === pid)!;
+        const p = products.find((x) => x.id === pid);
+        const date = preview[i];
+        if (!p || !date) throw new Error("Produto ou horário não encontrado.");
         return {
-          user_id, queue_id: queue.id, product_id: pid, position: i, status: "scheduled", scheduled_at: preview[i].toISOString(),
+          user_id, queue_id: queue.id, product_id: pid, position: i, status: "scheduled", scheduled_at: date.toISOString(),
           message_body: buildPromoMessage({ name: p.name, originalPrice: p.original_price, promoPrice: p.promo_price, coupon: p.coupon, link: p.affiliate_url, store: p.store }),
         };
       });
@@ -163,7 +165,7 @@ function QueueDetail({ queue, onBack }: { queue: Tables<"queues">; onBack: () =>
   async function saveEdit() {
     if (!edit) return;
     const { error } = await supabase.from("queue_items").update({ message_body: edit.body }).eq("id", edit.id).in("status", ["waiting", "scheduled"]);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     toast.success("Mensagem atualizada");
     setEdit(null);
     qc.invalidateQueries({ queryKey: ["queue_items"] });
@@ -215,7 +217,7 @@ function QueuesPage() {
 
   async function setStatus(q: Tables<"queues">, status: "active" | "paused" | "canceled") {
     const { error } = await supabase.from("queues").update({ status }).eq("id", q.id);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     if (status === "canceled") await supabase.from("queue_items").update({ status: "canceled" }).eq("queue_id", q.id).in("status", ["waiting", "scheduled"]);
     toast.success(status === "paused" ? "Fila pausada" : status === "active" ? "Fila retomada" : "Fila cancelada");
     qc.invalidateQueries({ queryKey: ["queues"] });
