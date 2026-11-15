@@ -13,8 +13,9 @@
 - [x] Explicitar status conectado, aguardando conexão e aguardando integração sem simular autenticação.
 - [x] Orientar acesso ao cadastro manual de grupos, categorias, seleção múltipla e limites do plano.
 # Integração real Z-API (caminho não oficial aceito pelo usuário)
-- [ ] Salvar ID da instância, token e Client-Token criptografados por conexão e por conta.
-- [ ] Gerar QR Code real e atualizar o status somente com a resposta da Z-API.
-- [ ] Importar grupos reais, sem duplicar cadastros e respeitando o limite do plano.
-- [ ] Enviar uma mensagem real de teste para um grupo selecionado e registrar o retorno.
-- [ ] Validar o fluxo com as credenciais e o número do usuário; nenhum sucesso será presumido antes disso.
+- [x] Salvar ID da instância, token e Client-Token criptografados por conexão e por conta.
+- [x] Implementar QR Code e atualização de status somente com a resposta da Z-API.
+- [x] Implementar importação sem duplicar cadastros e respeitando o limite do plano.
+- [x] Implementar disparo manual real com resultado individual e histórico não demonstrativo.
+- [x] Testar recusa real de instância inválida, proteção dos tokens e bloqueio de status manual no navegador.
+- [ ] Validar QR Code, importação e envio com as credenciais e o número do usuário; nenhum sucesso será presumido antes disso.
