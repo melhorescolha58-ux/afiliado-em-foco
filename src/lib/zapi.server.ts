@@ -57,9 +57,9 @@ export async function fetchAndStoreZapiStatus(
   credentials: ZapiCredentials,
 ): Promise<ZapiStatus> {
   const body = await zapiJson(await zapiRequest(credentials, "/status")) as Record<string, unknown>;
-  const connected = body.connected === true;
-  const smartphoneConnected = body.smartphoneConnected === true;
-  const providerMessage = typeof body.error === "string" ? body.error.slice(0, 300) : null;
+  const connected = body["connected"] === true;
+  const smartphoneConnected = body["smartphoneConnected"] === true;
+  const providerMessage = typeof body["error"] === "string" ? body["error"].slice(0, 300) : null;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { error } = await supabaseAdmin.from("connections").update({
     status: connected ? "connected" : "disconnected",

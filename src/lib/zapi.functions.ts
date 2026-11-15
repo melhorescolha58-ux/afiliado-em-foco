@@ -132,7 +132,7 @@ export const sendZapiMessage = createServerFn({ method: "POST" })
         method: "POST",
         body: JSON.stringify({ phone: group.external_id, message: data.message }),
       })) as Record<string, unknown>;
-      const externalId = [body.messageId, body.zaapId, body.id].find((value): value is string => typeof value === "string" && value.length > 0) ?? null;
+      const externalId = [body["messageId"], body["zaapId"], body["id"]].find((value): value is string => typeof value === "string" && value.length > 0) ?? null;
       if (!externalId) throw new Error("A Z-API não confirmou o identificador da mensagem.");
       const { error: logError } = await supabaseAdmin.from("send_logs").insert({ ...logBase, status: "sent", external_id: externalId });
       if (logError) console.error(`Z-API message ${externalId} accepted but history insert failed: ${logError.message}`);
