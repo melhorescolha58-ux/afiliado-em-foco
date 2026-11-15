@@ -14,7 +14,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/historico")({
-  head: () => ({ meta: [{ title: "Histórico de envios — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Histórico de envios — Afiliado Automático" }, { name: "description", content: "Histórico de envios no painel do Afiliado Automático." }, { property: "og:title", content: "Histórico de envios — Afiliado Automático" }, { property: "og:description", content: "Histórico de envios no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: HistoryPage,
 });
 

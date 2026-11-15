@@ -15,7 +15,7 @@ import { storeLabel } from "@/lib/stores";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/painel/ia")({
-  head: () => ({ meta: [{ title: "Inteligência artificial — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Inteligência artificial — Afiliado Automático" }, { name: "description", content: "Inteligência artificial no painel do Afiliado Automático." }, { property: "og:title", content: "Inteligência artificial — Afiliado Automático" }, { property: "og:description", content: "Inteligência artificial no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AiPage,
 });
 
@@ -47,8 +47,8 @@ function AiPage() {
     ].filter(Boolean).join("\n"));
   }
   function run() {
-    if (input.trim().length < 3) return toast.error("Escreva ou carregue um conteúdo primeiro.");
-    ai.mutate({ task, text: input, tone: task === "tone" ? tone : undefined }, { onSuccess: setOutput });
+    if (input.trim().length < 3) { toast.error("Escreva ou carregue um conteúdo primeiro."); return; }
+    ai.mutate({ task, text: input, ...(task === "tone" ? { tone } : {}) }, { onSuccess: setOutput });
   }
 
   return (

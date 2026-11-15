@@ -10,7 +10,7 @@ import { useAccount } from "@/hooks/use-account";
 import { formatDateTime, timeAgo } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/")({
-  head: () => ({ meta: [{ title: "Dashboard — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Afiliado Automático" }, { name: "description", content: "Dashboard no painel do Afiliado Automático." }, { property: "og:title", content: "Dashboard — Afiliado Automático" }, { property: "og:description", content: "Dashboard no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Dashboard,
 });
 

@@ -13,9 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { safeRedirect } from "@/lib/safe-redirect";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string } => typeof s["redirect"] === "string" ? { redirect: s["redirect"] } : {},
   head: () => ({
     meta: [
       { title: "Entrar — Afiliado Automático" },
@@ -67,11 +65,11 @@ function LoginPage() {
 
   async function sendReset(e: React.FormEvent) {
     e.preventDefault();
-    if (!z.string().email().safeParse(forgotEmail).success) return toast.error("Informe um e-mail válido.");
+    if (!z.string().email().safeParse(forgotEmail).success) { toast.error("Informe um e-mail válido."); return; }
     setSending(true);
     const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, { redirectTo: `${window.location.origin}/reset-password` });
     setSending(false);
-    if (error) return toast.error("Não foi possível enviar o e-mail. Tente novamente.");
+    if (error) { toast.error("Não foi possível enviar o e-mail. Tente novamente."); return; }
     toast.success("Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha.");
     setMode("login");
   }

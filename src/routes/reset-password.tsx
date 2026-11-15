@@ -43,12 +43,12 @@ function ResetPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (password.length < 8) return toast.error("A senha precisa ter pelo menos 8 caracteres.");
-    if (password !== confirm) return toast.error("As senhas não conferem.");
+    if (password.length < 8) { toast.error("A senha precisa ter pelo menos 8 caracteres."); return; }
+    if (password !== confirm) { toast.error("As senhas não conferem."); return; }
     setSaving(true);
     const { error } = await supabase.auth.updateUser({ password });
     setSaving(false);
-    if (error) return toast.error("Não foi possível alterar a senha. Solicite um novo link.");
+    if (error) { toast.error("Não foi possível alterar a senha. Solicite um novo link."); return; }
     toast.success("Senha alterada com sucesso!");
     navigate({ to: "/painel" });
   }

@@ -13,9 +13,10 @@ import { WhatsPreview } from "@/components/app/WhatsPreview";
 import { useRows, insertMany } from "@/lib/db";
 import { buildPromoMessage } from "@/lib/message-builder";
 import { errorMessage } from "@/lib/format";
+import { campaignAllowsStore } from "@/lib/marketplaces";
 
 export const Route = createFileRoute("/_authenticated/painel/disparo")({
-  head: () => ({ meta: [{ title: "Disparo manual — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Disparo manual — Afiliado Automático" }, { name: "description", content: "Disparo manual no painel do Afiliado Automático." }, { property: "og:title", content: "Disparo manual — Afiliado Automático" }, { property: "og:description", content: "Disparo manual no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: DispatchPage,
 });
 
@@ -44,9 +45,12 @@ function DispatchPage() {
   }, [productId, templateId, product, templates]);
 
   const inactive = product?.status === "inactive";
-  const canSend = text.trim().length >= 5 && groupIds.length > 0 && !inactive;
+  const campaign = campaigns.find((c) => c.id === campaignId);
+  const storeAllowed = !campaign?.marketplace_ids.length || (!!product && campaignAllowsStore(campaign.marketplace_ids, product.store));
+  const canSend = text.trim().length >= 5 && groupIds.length > 0 && !inactive && storeAllowed;
 
   async function confirm() {
+    if (!canSend) return;
     setBusy(true);
     try {
       const targets = groups.filter((g) => groupIds.includes(g.id));
@@ -105,6 +109,7 @@ function DispatchPage() {
                   </SelectContent>
                 </Select>
                 {inactive && <p className="text-xs text-destructive">Este produto está inativo e não pode ser enviado.</p>}
+                {!storeAllowed && <p className="text-xs text-destructive">Selecione um produto de uma das lojas participantes da campanha.</p>}
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">

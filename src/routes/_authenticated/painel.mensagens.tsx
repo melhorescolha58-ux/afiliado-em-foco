@@ -17,8 +17,8 @@ import { buildPromoMessage, MESSAGE_STYLES, type MessageStyle } from "@/lib/mess
 import { STORES } from "@/lib/stores";
 
 export const Route = createFileRoute("/_authenticated/painel/mensagens")({
-  validateSearch: (s: Record<string, unknown>): { produto?: string } => ({ produto: typeof s.produto === "string" ? s.produto : undefined }),
-  head: () => ({ meta: [{ title: "Criador de mensagens — Afiliado Automático" }] }),
+  validateSearch: (s: Record<string, unknown>): { produto?: string } => typeof s["produto"] === "string" ? { produto: s["produto"] } : {},
+  head: () => ({ meta: [{ title: "Criador de mensagens — Afiliado Automático" }, { name: "description", content: "Criador de mensagens no painel do Afiliado Automático." }, { property: "og:title", content: "Criador de mensagens — Afiliado Automático" }, { property: "og:description", content: "Criador de mensagens no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: MessagesPage,
 });
 
@@ -47,7 +47,7 @@ function MessagesPage() {
 
   const num = (v: string) => (v ? Number(v.replace(",", ".")) : null);
   function generate(s: MessageStyle = style) {
-    if (form.name.trim().length < 2) return toast.error("Informe o nome do produto.");
+    if (form.name.trim().length < 2) { toast.error("Informe o nome do produto."); return; }
     setText(buildPromoMessage({ name: form.name, originalPrice: num(form.originalPrice), promoPrice: num(form.promoPrice), coupon: form.coupon, link: form.link, store: form.store, extra: form.extra }, s));
   }
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm({ ...form, [k]: e.target.value });
@@ -118,7 +118,7 @@ function MessagesPage() {
           <WhatsPreview text={text} />
           <div className="surface-card flex flex-wrap gap-2 p-4">
             <Input value={templateName} onChange={(e) => setTemplateName(e.target.value)} placeholder="Nome do modelo" className="flex-1" maxLength={80} />
-            <Button variant="lime" disabled={!text || saveTemplate.isPending} onClick={() => { if (templateName.trim().length < 2) return toast.error("Dê um nome ao modelo."); saveTemplate.mutate({ name: templateName.trim(), body: text }, { onSuccess: () => setTemplateName("") }); }}><Save /> Salvar modelo</Button>
+            <Button variant="lime" disabled={!text || saveTemplate.isPending} onClick={() => { if (templateName.trim().length < 2) { toast.error("Dê um nome ao modelo."); return; } saveTemplate.mutate({ name: templateName.trim(), body: text }, { onSuccess: () => setTemplateName("") }); }}><Save /> Salvar modelo</Button>
           </div>
         </div>
       </div>

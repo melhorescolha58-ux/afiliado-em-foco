@@ -24,7 +24,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { formatDate, errorMessage } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/grupos")({
-  head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Meus grupos — Afiliado Automático" }, { name: "description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:title", content: "Meus grupos — Afiliado Automático" }, { property: "og:description", content: "Meus grupos no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: GroupsPage,
 });
 
@@ -69,7 +69,7 @@ function GroupDialog({ open, onOpenChange, group, categories, connections }: {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Categoria</Label>
-              <Select value={watch("category_id")} onValueChange={(v) => setValue("category_id", v)}>
+              <Select value={watch("category_id") ?? "none"} onValueChange={(v) => setValue("category_id", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Sem categoria</SelectItem>
@@ -79,7 +79,7 @@ function GroupDialog({ open, onOpenChange, group, categories, connections }: {
             </div>
             <div className="space-y-1.5">
               <Label>Conexão</Label>
-              <Select value={watch("connection_id")} onValueChange={(v) => setValue("connection_id", v)}>
+              <Select value={watch("connection_id") ?? "none"} onValueChange={(v) => setValue("connection_id", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Nenhuma</SelectItem>
@@ -106,7 +106,7 @@ function CategoriesDialog({ open, onOpenChange, categories }: { open: boolean; o
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader><DialogTitle>Categorias de grupos</DialogTitle></DialogHeader>
-        <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name.trim().length < 2) return toast.error("Nome muito curto"); save.mutate({ name: name.trim() }, { onSuccess: () => setName("") }); }}>
+        <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); if (name.trim().length < 2) { toast.error("Nome muito curto"); return; } save.mutate({ name: name.trim() }, { onSuccess: () => setName("") }); }}>
           <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Promoções Shopee" maxLength={60} />
           <Button type="submit" variant="hero" disabled={save.isPending}><Plus /> Criar</Button>
         </form>
@@ -154,7 +154,7 @@ function GroupsPage() {
   }
   async function setActive(active: boolean) {
     const { error } = await supabase.from("groups").update({ is_active: active }).in("id", [...selected]);
-    if (error) return toast.error(errorMessage(error));
+    if (error) { toast.error(errorMessage(error)); return; }
     toast.success(`${selected.size} grupo(s) ${active ? "ativados" : "desativados"}`);
     qc.invalidateQueries({ queryKey: ["groups"] });
     setSelected(new Set());

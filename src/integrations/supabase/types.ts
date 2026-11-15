@@ -176,6 +176,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          marketplace_ids: string[]
           name: string
           status: string
           updated_at: string
@@ -185,6 +186,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          marketplace_ids?: string[]
           name: string
           status?: string
           updated_at?: string
@@ -194,6 +196,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          marketplace_ids?: string[]
           name?: string
           status?: string
           updated_at?: string
@@ -359,6 +362,133 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      marketplace_configs: {
+        Row: {
+          config: Json
+          created_at: string
+          has_secret: boolean
+          id: string
+          is_active: boolean
+          marketplace_id: string
+          updated_at: string
+          user_id: string
+          validation_error: string | null
+          validation_status: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          has_secret?: boolean
+          id?: string
+          is_active?: boolean
+          marketplace_id: string
+          updated_at?: string
+          user_id: string
+          validation_error?: string | null
+          validation_status?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          has_secret?: boolean
+          id?: string
+          is_active?: boolean
+          marketplace_id?: string
+          updated_at?: string
+          user_id?: string
+          validation_error?: string | null
+          validation_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_configs_marketplace_id_fkey"
+            columns: ["marketplace_id"]
+            isOneToOne: false
+            referencedRelation: "marketplaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_credentials: {
+        Row: {
+          config_id: string
+          encrypted_payload: string
+          updated_at: string
+        }
+        Insert: {
+          config_id: string
+          encrypted_payload: string
+          updated_at?: string
+        }
+        Update: {
+          config_id?: string
+          encrypted_payload?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_credentials_config_id_fkey"
+            columns: ["config_id"]
+            isOneToOne: true
+            referencedRelation: "marketplace_configs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplaces: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          documentation_url: string | null
+          domains: string[]
+          fields: Json
+          id: string
+          is_available: boolean
+          logo_url: string | null
+          name: string
+          sort_order: number
+          tutorial_text: string
+          tutorial_url: string | null
+          tutorial_video_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string
+          documentation_url?: string | null
+          domains?: string[]
+          fields?: Json
+          id: string
+          is_available?: boolean
+          logo_url?: string | null
+          name: string
+          sort_order?: number
+          tutorial_text?: string
+          tutorial_url?: string | null
+          tutorial_video_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          documentation_url?: string | null
+          domains?: string[]
+          fields?: Json
+          id?: string
+          is_available?: boolean
+          logo_url?: string | null
+          name?: string
+          sort_order?: number
+          tutorial_text?: string
+          tutorial_url?: string | null
+          tutorial_video_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       message_templates: {
         Row: {
@@ -1027,6 +1157,16 @@ export type Database = {
         Returns: boolean
       }
       is_account_active: { Args: { _user_id: string }; Returns: boolean }
+      save_marketplace_configuration: {
+        Args: {
+          p_active: boolean
+          p_config: Json
+          p_encrypted?: string
+          p_marketplace_id: string
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       user_group_limit: { Args: { _user_id: string }; Returns: number }
     }
     Enums: {

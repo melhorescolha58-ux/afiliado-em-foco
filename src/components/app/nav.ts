@@ -1,6 +1,6 @@
 import {
   LayoutDashboard, Plug, Users, ShoppingBag, Link2, MessageSquareText, Megaphone, Send, CalendarClock, Repeat,
-  Workflow, Bot, Radar, History, BarChart3, Settings, CreditCard, LifeBuoy,
+  Workflow, Bot, Radar, History, BarChart3, Settings, CreditCard, LifeBuoy, Store,
 } from "lucide-react";
 
 export const NAV_SECTIONS = [
@@ -15,6 +15,7 @@ export const NAV_SECTIONS = [
   {
     label: "Ofertas",
     items: [
+      { to: "/painel/lojas", label: "Configurar Lojas", icon: Store },
       { to: "/painel/produtos", label: "Produtos e ofertas", icon: ShoppingBag },
       { to: "/painel/links", label: "Gerador de links", icon: Link2 },
       { to: "/painel/mensagens", label: "Criador de mensagens", icon: MessageSquareText },

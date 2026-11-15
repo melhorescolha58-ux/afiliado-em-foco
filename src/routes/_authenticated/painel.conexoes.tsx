@@ -13,7 +13,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { formatDateTime } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/painel/conexoes")({
-  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Conexões — Afiliado Automático" }, { name: "description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:title", content: "Conexões — Afiliado Automático" }, { property: "og:description", content: "Conexões no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ConnectionsPage,
 });
 
@@ -30,9 +30,9 @@ function ConnectionsPage() {
   const max = account?.subscription?.plan?.max_connections ?? 1;
 
   async function add() {
-    if (name.trim().length < 2) return toast.error("Dê um nome à conexão.");
+    if (name.trim().length < 2) { toast.error("Dê um nome à conexão."); return; }
     const digits = phone.replace(/\D/g, "");
-    if (digits && (digits.length < 10 || digits.length > 15)) return toast.error("Número inválido. Use DDI + DDD + número.");
+    if (digits && (digits.length < 10 || digits.length > 15)) { toast.error("Número inválido. Use DDI + DDD + número."); return; }
     await save.mutateAsync({ name: name.trim(), phone_number: digits ? `+${digits}` : null, status: "pending_validation", provider: "whatsapp_business_api" });
     setOpen(false); setName(""); setPhone("");
   }

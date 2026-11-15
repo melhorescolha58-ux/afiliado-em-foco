@@ -18,7 +18,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { WEEKDAYS } from "@/lib/queue-schedule";
 
 export const Route = createFileRoute("/_authenticated/painel/divulgador")({
-  head: () => ({ meta: [{ title: "Divulgador automático — Afiliado Automático" }] }),
+  head: () => ({ meta: [{ title: "Divulgador automático — Afiliado Automático" }, { name: "description", content: "Divulgador automático no painel do Afiliado Automático." }, { property: "og:title", content: "Divulgador automático — Afiliado Automático" }, { property: "og:description", content: "Divulgador automático no painel do Afiliado Automático." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: PublisherPage,
 });
 
@@ -31,10 +31,10 @@ function PublisherDialog({ draft, onClose }: { draft: Draft | null; onClose: () 
   const [d, setD] = useState<Draft>(draft ?? empty);
   if (!draft) return null;
   async function submit() {
-    if (d.name.trim().length < 2) return toast.error("Dê um nome à rotina.");
-    if (!d.product_ids.length || !d.group_ids.length) return toast.error("Selecione produtos e grupos.");
-    if (d.end_time <= d.start_time) return toast.error("O horário final deve ser depois do inicial.");
-    if (!d.days_of_week.length) return toast.error("Escolha ao menos um dia.");
+    if (d.name.trim().length < 2) { toast.error("Dê um nome à rotina."); return; }
+    if (!d.product_ids.length || !d.group_ids.length) { toast.error("Selecione produtos e grupos."); return; }
+    if (d.end_time <= d.start_time) { toast.error("O horário final deve ser depois do inicial."); return; }
+    if (!d.days_of_week.length) { toast.error("Escolha ao menos um dia."); return; }
     await save.mutateAsync({ ...d, name: d.name.trim() });
     onClose();
   }
@@ -51,7 +51,7 @@ function PublisherDialog({ draft, onClose }: { draft: Draft | null; onClose: () 
             </div>
             <div className="space-y-2">
               <Label>Intervalo entre ofertas: <b className="text-primary">{d.interval_minutes} min</b></Label>
-              <Slider min={1} max={120} step={1} value={[d.interval_minutes]} onValueChange={([v]) => setD({ ...d, interval_minutes: v })} />
+              <Slider min={1} max={120} step={1} value={[d.interval_minutes]} onValueChange={([v]) => setD({ ...d, interval_minutes: v ?? d.interval_minutes })} />
             </div>
             <div className="space-y-1.5"><Label>Máximo de ofertas por dia</Label><Input type="number" min={1} max={1000} value={d.max_per_period} onChange={(e) => setD({ ...d, max_per_period: Number(e.target.value) })} /></div>
             <div className="space-y-1.5"><Label>Dias da semana</Label><WeekdayPicker value={d.days_of_week} onChange={(v) => setD({ ...d, days_of_week: v })} /></div>

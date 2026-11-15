@@ -15,6 +15,13 @@
       "when": 1794684841864,
       "tag": "0001_contact_messages",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794720840909,
+      "tag": "0002_marketplace_configuration",
+      "breakpoints": true
     }
   ]
 }
